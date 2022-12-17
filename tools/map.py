@@ -2,8 +2,8 @@ import re
 from argparse import ArgumentParser
 
 parser = ArgumentParser(description="Fetch symbols from map file")
-parser.add_argument('mapf', type=str, help="Map file path")
-parser.add_argument('relf', type=str, help="Rel file path")
+parser.add_argument('mapf', type=str, help="Dol Map file path")
+parser.add_argument('relf', type=str, help="Rel Map file path")
 parser.add_argument('yml_p', type=str, help="YML output path")
 args = parser.parse_args()
 
@@ -61,7 +61,7 @@ for isrel, filename in enumerate((args.mapf, args.relf)):
                 source = d[6] if len(d) > 6 else None
                 entries.append(entry(d[0], d[1], d[2], d[3], d[4], d[5], source))
             if isrel:
-                relshifts = {".bss": 0x8125A7C0, ".text": 0x803702A9, ".rodata": 0x80641260, ".data": 0x8064D500}
+                relshifts = {".bss": 0x8125A7C0, ".text": 0x803702A8, ".rodata": 0x80641260, ".data": 0x8064D500}
                 entries[-1].file = "rel/" + entries[-1].file
                 if entries[-1].source is not None:
                     entries[-1].source = "rel/" + entries[-1].source
