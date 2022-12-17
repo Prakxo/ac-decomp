@@ -1,0 +1,12 @@
+__pycache__/
+.vscode/
+build/
+out/
+dump/*
+!dump/foresta.rel.sha1
+!dump/main.dol.sha1
+*.dol
+*.rel
+*.exe
+*.dll
+build.ninja

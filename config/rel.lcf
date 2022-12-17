@@ -1,0 +1,21 @@
+SECTIONS {
+    GROUP:{
+        .init:{}
+        .text:{}
+        .ctors:{}
+        .dtors:{}
+        .rodata:{}
+        .data:{}
+        .bss:{}
+
+        // Removed by elf2rel
+        forcestrip:{}
+        relsymdef:{}
+    }
+}
+FORCEFILES {
+}
+
+__dummy_str = 0;
+__dummy_float = 0;
+__dummy_double = 0;
