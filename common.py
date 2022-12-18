@@ -302,8 +302,7 @@ BASE_DOL_CFLAGS = CFLAGS + [
 BASE_REL_CFLAGS = CFLAGS + [
      "-sdata 0",
      f"-sdata2 {REL_SDATA2_SIZE}",
-     "-pool off",
-     "-ordered-fp-compares"
+     "-pool off"
 ]
 
 LOCAL_CFLAGS = [

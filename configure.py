@@ -205,7 +205,7 @@ n.rule(
 )
 
 n.rule(
-    "css",
+    "ccs",
     command = ALLOW_CHAIN + f"$cpp -M $in -MF $out.d $cppflags && $cc $cflags -S $in -o $out",
     description = "CC -S $in",
     deps = "gcc",

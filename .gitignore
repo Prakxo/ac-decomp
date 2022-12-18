@@ -1,6 +1,9 @@
 __pycache__/
 .vscode/
 build/
+expected/
+rel/*/*.s
+src/*/*.s
 out/
 dump/*
 !dump/foresta.rel.sha1

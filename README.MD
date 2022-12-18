@@ -14,7 +14,7 @@ Use `--recursive` when cloning to have ppcdis and libyaz0 in the repository.
 
 - Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 - Decompress **foresta.rel.szs** with libyaz0 found in *tools/libyaz0*.
-- Place **main.dol** in *dump/sys/* and **foresta.rel** in *dump/root/*.
+- Place **main.dol** and **foresta.rel** in *dump/*.
 - Place CodeWarrior 1.3.2 in *tools/1.3.2/*.
 - Install DevkitPPC, Ninja and Python:
     - **Only tested with DevkitPPC r41 and Python 3.8.10**, however other versions should work fine.
