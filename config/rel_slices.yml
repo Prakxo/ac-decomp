@@ -1,8 +1,10 @@
 # ac_aprilfool_control/aPC_actor_dt.c:
     # .text: [0x805153f0, 0x8051542C]
-# zurumode/zerucheck_init.c:
-    # .text: [0x8040eb38, 0x8040EB50] WILL TRY TO FIX these later, one wasn't matching and the other's didn't find the symbol when converting to ELF.
-# zurumode/zerucheck_key_check.c:
-    # .text: [0x8040EB50, 0x8040EDA8]
-# zurumode/zurumode_cleanup.c:
-    # .text: [0x8040efc4, 0x8040f008]
+zurumode/zerucheck_init.c:
+    .text: [0x8040eb38, 0x8040EB50] 
+zurumode/zerucheck_key_check.c:
+    .text: [0x8040EB50, 0x8040EDA8]
+zurumode/zurumode_cleanup.c:
+    .text: [0x8040efc4, 0x8040f008]
+# zurumode/zurumode_update.c:
+    # .text: [0x8040EDA8 , 0x8040ee74] Has C++ functions but was matched with C?? Won't really bother at the moment with this one.

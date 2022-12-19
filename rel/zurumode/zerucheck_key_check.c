@@ -21,7 +21,7 @@
  * @param controller current controller state
  * @return int zurumodeEnabled
  */
-static int zerucheck_key_check(zuru_keycheck* key_check, u32 controller) {
+int zerucheck_key_check(zuru_keycheck* key_check, u32 controller) {
   u32 controller_new;           /* Buttons pressed on the current frame only */
   int state = key_check->state; /* Keycheck state */
   int progressing = key_check->progressing; /* Progressing through keycheck */

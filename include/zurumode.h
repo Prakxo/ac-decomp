@@ -3,6 +3,11 @@
 
 #include "types.h"
 
+#include "dolphin/os.h"
+#include "libultra/libultra.h"
+#include "JSystem/JUT/JUTAssertion.h"
+#include "JSystem/JUT/JUTDbPrint.h"
+
 typedef struct zuru_keycheck_s {
   u8 state;
   u8 progressing;
@@ -10,8 +15,8 @@ typedef struct zuru_keycheck_s {
   u8 zurumode_enabled;
 } zuru_keycheck;
 
-static zuru_keycheck zuruKeyCheck;
-
+extern zuru_keycheck zuruKeyCheck;
+extern s32 zurumode_flag;
 #define ZURUMODE_RESET 0
 #define ZURUMODE_PROGRESSING 1
 
