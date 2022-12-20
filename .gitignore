@@ -3,7 +3,7 @@ __pycache__/
 build/
 expected/
 rel/*/*.s
-src/*/*.s
+src/*/*/*.s  
 out/
 dump/*
 !dump/foresta.rel.sha1

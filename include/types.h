@@ -26,6 +26,15 @@ typedef double f64;
 typedef volatile f32 vf32;
 typedef volatile f64 vf64;
 
-#define NULL ((void*)0)
+typedef int BOOL;
+typedef unsigned int uintptr_t; // Manually added
 
+// Pointer to unknown, to be determined at a later date.
+typedef void* unkptr;
+typedef u32 unknown;
+
+#define TRUE 1
+#define FALSE 0
+#define NULL ((void*)0)
+#define nullptr 0
 #endif

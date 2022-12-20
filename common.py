@@ -309,6 +309,7 @@ LOCAL_CFLAGS = [
     "-nostdinc",
     "-proc gekko",
     "-maxerrors 1",
+    "-Cpp_exceptions off",
     "-I-",
     f"-i {INCDIR}",
     f"-i {PPCDIS_INCDIR}",
