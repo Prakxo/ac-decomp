@@ -52699,7 +52699,7 @@ src/OSMemory.c:
     0x8007c070: Config24MB
     0x8007c0f0: Config48MB
     0x800e01a8: ResetFunctionInfo
-src/ReconfigBATs.c:
+src/libforest/ReconfigBATs.c:
     0x8005adac: Config24MB
     0x8005ae18: Config48MB
 src/SIBios.c:

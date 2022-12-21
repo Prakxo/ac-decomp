@@ -1,0 +1,88 @@
+#include "libforest/batconfig.h"
+// Different to the OS ones.
+// Not fully Decompiled, need ReconfigBATs func, however there's os stuff that needs to be known.
+static asm void Config24MB(){
+nofralloc
+/* 8005ADAC 7C6000A6 */ mfmsr       r3
+/* 8005ADB0 54630734 */ rlwinm      r3, r3, 0, 0x1c, 0x1a
+/* 8005ADB4 7C600124 */ mtmsr       r3
+/* 8005ADB8 4C00012C */ isync       
+/* 8005ADBC 38E00000 */ li          r7, 0x0
+/* 8005ADC0 3C800000 */ lis         r4, 0
+/* 8005ADC4 38840002 */ addi        r4, r4, 0x2
+/* 8005ADC8 3C608000 */ lis         r3, 0x8000
+/* 8005ADCC 386301FF */ addi        r3, r3, 0x1ff
+/* 8005ADD0 3CC00100 */ lis         r6, 0x100
+/* 8005ADD4 38C60002 */ addi        r6, r6, 0x2
+/* 8005ADD8 3CA08100 */ lis         r5, 0x8100
+/* 8005ADDC 38A500FF */ addi        r5, r5, 0xff
+/* 8005ADE0 4C00012C */ isync       
+/* 8005ADE4 7CF883A6 */ mtdbatu     0, r7
+/* 8005ADE8 7C9983A6 */ mtdbatl     0, r4
+/* 8005ADEC 7C7883A6 */ mtdbatu     0, r3
+/* 8005ADF0 4C00012C */ isync       
+/* 8005ADF4 7CFC83A6 */ mtdbatu     2, r7
+/* 8005ADF8 7CDD83A6 */ mtdbatl     2, r6
+/* 8005ADFC 7CBC83A6 */ mtdbatu     2, r5
+/* 8005AE00 4C00012C */ isync       
+/* 8005AE04 7C6000A6 */ mfmsr       r3
+/* 8005AE08 60630010 */ ori         r3, r3, 0x10
+/* 8005AE0C 7C600124 */ mtmsr       r3
+/* 8005AE10 4C00012C */ isync       
+/* 8005AE14 4E800020 */ blr         
+}
+static void Config48MB(){
+nofralloc
+/* 8005AE18 7C6000A6 */ mfmsr       r3
+/* 8005AE1C 54630734 */ rlwinm      r3, r3, 0, 0x1c, 0x1a
+/* 8005AE20 7C600124 */ mtmsr       r3
+/* 8005AE24 4C00012C */ isync       
+/* 8005AE28 38E00000 */ li          r7, 0x0
+/* 8005AE2C 3C800000 */ lis         r4, 0
+/* 8005AE30 38840002 */ addi        r4, r4, 0x2
+/* 8005AE34 3C608000 */ lis         r3, 0x8000
+/* 8005AE38 386303FF */ addi        r3, r3, 0x3ff
+/* 8005AE3C 3CC00200 */ lis         r6, 0x200
+/* 8005AE40 38C60002 */ addi        r6, r6, 0x2
+/* 8005AE44 3CA08200 */ lis         r5, 0x8200
+/* 8005AE48 38A501FF */ addi        r5, r5, 0x1ff
+/* 8005AE4C 4C00012C */ isync       
+/* 8005AE50 7CF883A6 */ mtdbatu     0, r7
+/* 8005AE54 7C9983A6 */ mtdbatl     0, r4
+/* 8005AE58 7C7883A6 */ mtdbatu     0, r3
+/* 8005AE5C 4C00012C */ isync       
+/* 8005AE60 7CFC83A6 */ mtdbatu     2, r7
+/* 8005AE64 7CDD83A6 */ mtdbatl     2, r6
+/* 8005AE68 7CBC83A6 */ mtdbatu     2, r5
+/* 8005AE6C 4C00012C */ isync       
+/* 8005AE70 7C6000A6 */ mfmsr       r3
+/* 8005AE74 60630010 */ ori         r3, r3, 0x10
+/* 8005AE78 7C600124 */ mtmsr       r3
+/* 8005AE7C 4C00012C */ isync       
+/* 8005AE80 4E800020 */ blr
+}
+static void ReconfigBATs(){
+nofralloc
+/* 8005AE84 9421FFF0 */ stwu        r1, -0x10(r1)
+/* 8005AE88 7C0802A6 */ mflr        r0
+/* 8005AE8C 90010014 */ stw         r0, 0x14(r1)
+/* 8005AE90 93E1000C */ stw         r31, 0xc(r1)
+/* 8005AE94 4801FD91 */ bl          func_8007ac24
+/* 8005AE98 7C7F1B78 */ mr          r31, r3
+/* 8005AE9C 4802105D */ bl          func_8007bef8
+/* 8005AEA0 3C000180 */ lis         r0, 0x180
+/* 8005AEA4 7C030040 */ cmplw       r3, r0
+/* 8005AEA8 4181000C */ bgt-        lbl_8005aeb4
+/* 8005AEAC 4BFFFF01 */ bl          func_8005adac
+/* 8005AEB0 48000008 */ b           lbl_8005aeb8
+lbl_8005aeb4:
+/* 8005AEB4 4BFFFF65 */ bl          func_8005ae18
+lbl_8005aeb8:
+/* 8005AEB8 7FE3FB78 */ mr          r3, r31
+/* 8005AEBC 4801FD91 */ bl          func_8007ac4c
+/* 8005AEC0 80010014 */ lwz         r0, 0x14(r1)
+/* 8005AEC4 83E1000C */ lwz         r31, 0xc(r1)
+/* 8005AEC8 7C0803A6 */ mtlr        r0
+/* 8005AECC 38210010 */ addi        r1, r1, 0x10
+/* 8005AED0 4E800020 */ blr         
+}
