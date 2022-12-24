@@ -22,9 +22,6 @@ extern s32 zurumode_flag;
 
 #define OS_APP_NMI_ZURUMODE_IDX 15
 
-#define FALSE 0
-#define TRUE 1
-
 
 #define BUTTON_NONE 0x0000
 #define BUTTON_CRIGHT 0x0001

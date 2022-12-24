@@ -3,5 +3,5 @@
 
 static asm void Config24MB();
 static asm void Config48MB();
-static asm void ReconfigBATs();
+void ReconfigBATs();
 #endif

@@ -4,3 +4,9 @@ libultra/gfxprint/gfxprint_locate8x8.c:
     .text: [0x8005B210, 0x8005B238]
 # libforest/ReconfigBATs.c:
     # .text: [0x8007C070, 0x8005ae84]
+# OS/OSEnableInterrupts.c: I'm too tired, but I did these and cba to fix atm stuff
+    # .text: [0x8007ac38, 0x8007ac4c]
+# OS/OSRestoreInterrupts.c:
+    # .text: [0x8007ac4c, 0x8007ac70]
+# OS/OSDisableInterrupts.c:
+    # .text: [0x8007ac24, 0x8007ac38]

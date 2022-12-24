@@ -1,4 +1,5 @@
 #include "libforest/batconfig.h"
+#include "dolphin/os.h"
 // Different to the OS ones.
 // Not fully Decompiled, need ReconfigBATs func, however there's os stuff that needs to be known.
 static asm void Config24MB(){
@@ -31,7 +32,7 @@ nofralloc
 /* 8005AE10 4C00012C */ isync       
 /* 8005AE14 4E800020 */ blr         
 }
-static void Config48MB(){
+static asm void Config48MB(){
 nofralloc
 /* 8005AE18 7C6000A6 */ mfmsr       r3
 /* 8005AE1C 54630734 */ rlwinm      r3, r3, 0, 0x1c, 0x1a
@@ -61,28 +62,15 @@ nofralloc
 /* 8005AE7C 4C00012C */ isync       
 /* 8005AE80 4E800020 */ blr
 }
-static void ReconfigBATs(){
-nofralloc
-/* 8005AE84 9421FFF0 */ stwu        r1, -0x10(r1)
-/* 8005AE88 7C0802A6 */ mflr        r0
-/* 8005AE8C 90010014 */ stw         r0, 0x14(r1)
-/* 8005AE90 93E1000C */ stw         r31, 0xc(r1)
-/* 8005AE94 4801FD91 */ bl          func_8007ac24
-/* 8005AE98 7C7F1B78 */ mr          r31, r3
-/* 8005AE9C 4802105D */ bl          func_8007bef8
-/* 8005AEA0 3C000180 */ lis         r0, 0x180
-/* 8005AEA4 7C030040 */ cmplw       r3, r0
-/* 8005AEA8 4181000C */ bgt-        lbl_8005aeb4
-/* 8005AEAC 4BFFFF01 */ bl          func_8005adac
-/* 8005AEB0 48000008 */ b           lbl_8005aeb8
-lbl_8005aeb4:
-/* 8005AEB4 4BFFFF65 */ bl          func_8005ae18
-lbl_8005aeb8:
-/* 8005AEB8 7FE3FB78 */ mr          r3, r31
-/* 8005AEBC 4801FD91 */ bl          func_8007ac4c
-/* 8005AEC0 80010014 */ lwz         r0, 0x14(r1)
-/* 8005AEC4 83E1000C */ lwz         r31, 0xc(r1)
-/* 8005AEC8 7C0803A6 */ mtlr        r0
-/* 8005AECC 38210010 */ addi        r1, r1, 0x10
-/* 8005AED0 4E800020 */ blr         
+void ReconfigBATs(){
+	
+BOOL restore = OSDisableInterrupts();
+
+if (OSGetSimulatedMemorySize() <= 0x1800000) {
+	Config24MB();
+	else{
+	Config48MB();
+	}
+}
+	OSRestoreInterrupts(restore);
 }
