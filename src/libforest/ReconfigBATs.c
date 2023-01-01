@@ -1,8 +1,6 @@
 #include "libforest/batconfig.h"
-#include "dolphin/os.h"
-// Different to the OS ones.
-// Not fully Decompiled, need ReconfigBATs func, however there's os stuff that needs to be known.
-static asm void Config24MB(){
+
+asm void Config24MB(){
 nofralloc
 /* 8005ADAC 7C6000A6 */ mfmsr       r3
 /* 8005ADB0 54630734 */ rlwinm      r3, r3, 0, 0x1c, 0x1a
@@ -32,7 +30,7 @@ nofralloc
 /* 8005AE10 4C00012C */ isync       
 /* 8005AE14 4E800020 */ blr         
 }
-static asm void Config48MB(){
+asm void Config48MB(){
 nofralloc
 /* 8005AE18 7C6000A6 */ mfmsr       r3
 /* 8005AE1C 54630734 */ rlwinm      r3, r3, 0, 0x1c, 0x1a
@@ -63,14 +61,12 @@ nofralloc
 /* 8005AE80 4E800020 */ blr
 }
 void ReconfigBATs(){
-	
-BOOL restore = OSDisableInterrupts();
-
-if (OSGetSimulatedMemorySize() <= 0x1800000) {
-	Config24MB();
-	else{
-	Config48MB();
-	}
-}
-	OSRestoreInterrupts(restore);
+    BOOL rest = OSDisableInterrupts();
+    if (OSGetConsoleSimulatedMemSize() <= 0x1800000){
+        Config24MB();
+    }
+    else {
+        Config48MB();
+    }
+    OSRestoreInterrupts(rest);
 }

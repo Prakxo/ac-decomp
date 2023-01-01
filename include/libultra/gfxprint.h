@@ -2,8 +2,9 @@
 #define GFXPRINT_H
 
 #include "types.h"
+typedef void* (*PrintCallback)(void*, const char*, size_t);
 typedef struct gfxprint_obj  {
-    s32 unk0;
+    PrintCallback callback;
     struct unknown_struct * unk4; // This is from GBI.h, from what I've seen
     s16 NewX;
     s16 NewY;

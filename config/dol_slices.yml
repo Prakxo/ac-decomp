@@ -2,11 +2,18 @@ libultra/gfxprint/gfxprint_locate.c:
     .text: [0x8005B1EC, 0x8005B210]
 libultra/gfxprint/gfxprint_locate8x8.c:
     .text: [0x8005B210, 0x8005B238]
-# libforest/ReconfigBATs.c:
-    # .text: [0x8007C070, 0x8005ae84]
-# OS/OSEnableInterrupts.c: I'm too tired, but I did these and cba to fix atm stuff
-    # .text: [0x8007ac38, 0x8007ac4c]
-# OS/OSRestoreInterrupts.c:
-    # .text: [0x8007ac4c, 0x8007ac70]
+libforest/ReconfigBATs.c:
+    .text: [0x8005adac, 0x8005aed4]
 # OS/OSDisableInterrupts.c:
     # .text: [0x8007ac24, 0x8007ac38]
+OS/OSEnableInterrupts.c:
+    .text: [0x8007ac38, 0x8007ac4c]
+OS/OSRestoreInterrupts.c:
+    .text: [0x8007ac4c, 0x8007ac70]
+BASE/ppcarch.c:
+    .text: [0x8007867c, 0x800786e8]
+OS/OSArena.c:
+    .text: [0x8007988c, 0x800798ac]
+    .sdata: [0x80218178, 0x80218180]
+    .sbss: [0x802188f8, 0x80218900]
+    

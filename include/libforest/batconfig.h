@@ -1,7 +1,11 @@
 #ifndef BATCONFIG_H
 #define BATCONFIG_H
 
-static asm void Config24MB();
-static asm void Config48MB();
+#include "types.h"
+#include "dolphin/OSMemory.h"
+#include "dolphin/os.h"
+
+asm void Config24MB();
+asm void Config48MB();
 void ReconfigBATs();
 #endif
