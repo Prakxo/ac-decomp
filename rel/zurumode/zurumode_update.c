@@ -1,4 +1,6 @@
 #include "zurumode.h"
+
+extern s32 zurumode_flag;
 s32 zurumode_update() {
     s32 flag_now;
     s32 zurumode_now;

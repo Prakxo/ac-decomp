@@ -15,8 +15,24 @@ typedef struct zuru_keycheck_s {
   u8 zurumode_enabled;
 } zuru_keycheck;
 
+typedef struct { // This needs to be researched and in its corresponding file tbh
+    u8 pad_pattern;
+    void (*callback)(void*);
+    void* callback_param;
+    void (*callback2)(void*);
+    void* callback2_param;
+} padmgr;
+
+extern padmgr padmgr_class;
 extern zuru_keycheck zuruKeyCheck;
-extern s32 zurumode_flag;
+
+
+void zurumode_cleanup(void);
+int zerucheck_init(zuru_keycheck* key_check);
+void zurumode_update(void);
+void zurumode_callback(void* padmgr);
+int zerucheck_key_check(zuru_keycheck* key_check, u32 controller);
+
 #define ZURUMODE_RESET 0
 #define ZURUMODE_PROGRESSING 1
 
@@ -62,8 +78,4 @@ enum zurumode_stage {
   ZURUMODE_STAGE_FINAL_e = ZURUMODE_STAGE_11_e
 };
 
-enum zurumode_flags {
-    ZURUMODE_DISABLED_e = 0 << 0,
-    ZURUMODE_ENABLED_e = 1 << 0
-};
 #endif

@@ -6,6 +6,8 @@ zurumode/zerucheck_key_check.c:
     .text: [0x8040EB50, 0x8040EDA8]
 zurumode/zurumode_cleanup.c:
     .text: [0x8040efc4, 0x8040f008]
+# zurumode/zurumode_init.c:
+    # .text: [0x8040ef58, 0x8040efc4]
 # zurumode/zurumode_update.c:
     # .text: [0x8040EDA8 , 0x8040ee74] Won't really bother at the moment with this one.
 m_random_field/mRF_MakePerfectBit.c:
