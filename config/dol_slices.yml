@@ -4,16 +4,22 @@ libultra/gfxprint/gfxprint_locate8x8.c:
     .text: [0x8005B210, 0x8005B238]
 libforest/ReconfigBATs.c:
     .text: [0x8005adac, 0x8005aed4]
-# OS/OSDisableInterrupts.c:
-    # .text: [0x8007ac24, 0x8007ac38]
-OS/OSEnableInterrupts.c:
-    .text: [0x8007ac38, 0x8007ac4c]
-OS/OSRestoreInterrupts.c:
-    .text: [0x8007ac4c, 0x8007ac70]
 BASE/ppcarch.c:
     .text: [0x8007867c, 0x800786e8]
 OS/OSArena.c:
     .text: [0x8007988c, 0x800798ac]
     .sdata: [0x80218178, 0x80218180]
     .sbss: [0x802188f8, 0x80218900]
-    
+# OS/OSCache.c:
+    # .text: [0x80079b40, 0x80079d30]
+# OS/OSDisableInterrupts.c:
+    # .text: [0x8007ac24, 0x8007ac38]
+OS/OSEnableInterrupts.c:
+    .text: [0x8007ac38, 0x8007ac4c]
+OS/OSRestoreInterrupts.c:
+    .text: [0x8007ac4c, 0x8007ac70]
+MSL_C/rand.c:
+    .text: [0x8009f46c, 0x8009f494]
+    .sdata: [0x80218260, 0x80218268]
+libultra/ultra.c:
+    .text: [0x8005d01c, 0x8005d090]

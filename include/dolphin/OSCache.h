@@ -1,6 +1,7 @@
 #ifndef OS_CACHE_H
 #define OS_CACHE_H
 #include "types.h"
+#include "dolphin/OSContext.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
