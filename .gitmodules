@@ -1,6 +1,3 @@
-[submodule "tools/libyaz0"]
-	path = tools/libyaz0
-	url = https://github.com/aboood40091/libyaz0
 [submodule "tools/ppcdis"]
 	path = tools/ppcdis
 	url = https://github.com/SeekyCt/ppcdis

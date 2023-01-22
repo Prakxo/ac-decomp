@@ -8,14 +8,14 @@
 #include "JSystem/JUT/JUTAssertion.h"
 #include "JSystem/JUT/JUTDbPrint.h"
 
-typedef struct zuru_keycheck_s {
+typedef struct zuru_keycheck {
   u8 state;
   u8 progressing;
   u16 last_controller;
   u8 zurumode_enabled;
 } zuru_keycheck;
 
-typedef struct { // This needs to be researched and in its corresponding file tbh
+typedef struct {
     u8 pad_pattern;
     void (*callback)(void*);
     void* callback_param;
@@ -24,12 +24,11 @@ typedef struct { // This needs to be researched and in its corresponding file tb
 } padmgr;
 
 extern padmgr padmgr_class;
-extern zuru_keycheck zuruKeyCheck;
 
-
+extern s32 zurumode_flag;
 void zurumode_cleanup(void);
 int zerucheck_init(zuru_keycheck* key_check);
-void zurumode_update(void);
+s32 zurumode_update(void);
 void zurumode_callback(void* padmgr);
 int zerucheck_key_check(zuru_keycheck* key_check, u32 controller);
 

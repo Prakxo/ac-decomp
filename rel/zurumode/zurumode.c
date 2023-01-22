@@ -1,5 +1,8 @@
 #include "zurumode.h"
 
+static zuru_keycheck zuruKeyCheck;
+static s32 zurumode_flag;
+
 int zerucheck_init(zuru_keycheck* key_check) {
   key_check->zurumode_enabled = FALSE;
   key_check->state = ZURUMODE_STAGE_BEGIN_e;
@@ -224,7 +227,7 @@ void zurumode_callback(padmgr* padmgr) {
     zurumode_update();
     }
 
-// Padmgr struct might be huge lol, anyway I think it's matched, 
+// Padmgr struct is unknown, anyway I think it's matched, 
 //just that the struct that is declared here it's not that accurate
 //and pad_pattern is at 0x42E
 
@@ -237,7 +240,7 @@ void zurumode_init(void){
     zurumode_update();
 }
 
-void zurumode_cleanup(void) { // Hm, this looks like PADMGR_UNSET_RETRACE_CALLBACK macro lol
+void zurumode_cleanup(void) { // Hm, this looks like PADMGR_UNSET_RETRACE_CALLBACK macro
     if ((padmgr_class.callback2 == &zurumode_callback) && (padmgr_class.callback2_param == &padmgr_class)) {
         padmgr_class.callback2 = NULL;
         padmgr_class.callback2_param = NULL;

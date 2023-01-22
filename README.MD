@@ -4,7 +4,7 @@ Decompilation in progress of Animal Crossing (GAFE01)
 
 ## Cloning
 
-Use `--recursive` when cloning to have ppcdis and libyaz0 in the repository. 
+Use `--recursive` when cloning to have ppcdis in the repository. 
 
 ## Build
 
@@ -13,7 +13,7 @@ Use `--recursive` when cloning to have ppcdis and libyaz0 in the repository.
 ### Building
 
 - Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
-- Decompress **foresta.rel.szs** with libyaz0 found in *tools/libyaz0*.
+- Decompress **foresta.rel.szs** with yaz0 found in *tools/*.
 - Place **main.dol** and **foresta.rel** in *dump/*.
 - Place CodeWarrior 1.3.2 in *tools/1.3.2/*.
 - Install DevkitPPC, Ninja and Python:

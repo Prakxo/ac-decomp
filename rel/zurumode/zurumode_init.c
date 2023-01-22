@@ -1,6 +1,5 @@
 #include "zurumode.h"
 
-extern s32 zurumode_flag;
 void zurumode_init(void){
     zurumode_flag = 0;
     zerucheck_init(&zuruKeyCheck);
