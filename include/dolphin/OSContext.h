@@ -17,8 +17,8 @@ typedef struct OSContext{
 	u32 fpscr;
 	u32 srr0;
 	u32 srr1;
-	u16 SHORT_0x1A0;
-	u16 SHORT_0x1A2;
+	u16 mode;
+	u16 state;
 	u32 gqrs[8];
 	char UNK_0x1C4;
 	f64 psfs[32];
@@ -35,11 +35,11 @@ asm BOOL OSSaveContext(OSContext*);
 asm void OSLoadContext(OSContext*);
 asm void* OSGetStackPointer(void);
 void OSClearContext(OSContext*);
-asm void OSInitContext(OSContext*);
-void OSDumpContext(OSContext*);
+asm void OSInitContext(register OSContext* ctx, register u32 srr, register sp);
+void OSDumpContext(const OSContext*);
 
 void __OSContextInit(void);
 #ifdef __cplusplus
-}
+};
 #endif
 #endif
