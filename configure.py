@@ -22,8 +22,9 @@ import common as c
 
 # Check CodeWarrior was added
 assert os.path.exists("tools/1.3.2/mwcceppc.exe") and \
+    os.path.exists("tools/1.2.5/mwcceppc.exe") and \
        os.path.exists("tools/1.3.2/mwldeppc.exe"), \
-       "Error: Codewarrior not found in tools/1.3.2"
+       "Error: Codewarrior not found!"
 
 # Check binaries were added
 assert os.path.exists(c.DOL) and os.path.exists(c.REL), \
@@ -80,6 +81,7 @@ n.variable("elf2dol", c.ELF2DOL)
 n.variable("elf2rel", c.ELF2REL)
 n.variable("codewarrior", c.CODEWARRIOR)
 n.variable("cc", c.CC)
+n.variable("occ", c.OCC)
 n.variable("ld", c.LD)
 n.variable("devkitppc", c.DEVKITPPC)
 n.variable("as", c.AS)
@@ -203,7 +205,6 @@ n.rule(
     deps = "gcc",
     depfile = "$out.d"
 )
-
 n.rule(
     "ccs",
     command = ALLOW_CHAIN + f"$cpp -M $in -MF $out.d $cppflags && $cc $cflags -S $in -o $out",
@@ -571,7 +572,12 @@ class AsmSource(Source):
         
 class CSource(Source):
     def __init__(self, ctx: c.SourceContext, path: str):
-        self.cflags = ctx.cflags
+        if path.startswith("src/dolphin/"):
+            self.cflags = c.SDK_FLAGS
+            self.cc = c.OCC
+        else:
+            self.cflags = ctx.cflags
+            self.cc = c.CC
         self.iconv_path = f"$builddir/iconv/{path}"
 
  # Find generated includes
@@ -593,6 +599,7 @@ class CSource(Source):
             inputs = self.iconv_path,
             implicit = [inc.path for inc in self.gen_includes],
             variables = {
+                "cc" : self.cc,
                 "cflags" : self.cflags
             }
         )

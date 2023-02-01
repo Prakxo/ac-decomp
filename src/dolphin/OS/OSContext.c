@@ -390,7 +390,7 @@ void OSDumpContext(const OSContext* ctx){
      u32 i;
      u32* p;
 
-     OSReport("------------------------- Context 0x%08X -------------------------\n", ctx)
+     OSReport("------------------------- Context 0x%08X -------------------------\n", ctx);
 
      for(i = 0; i < 16; i++){
      OSReport("r%-2d  = 0x%08% (14%d)  r%-2d  = 0x%08% (14%d)\n", i, ctx->gprs[i], ctx->gprs[i], i+16, ctx->gprs[i+16], ctx->gprs[i+16]);
@@ -414,7 +414,7 @@ void OSDumpContext(const OSContext* ctx){
 
      OSReport("\n\nFPRS----------\n");
      for(i = 0; i < 32; i += 2) {
-     OSReport("fr%d \t= %d \t fr%d \t= %d\n", i, (u32)context->fprs[i], i + 1, (u32)context->fprs[i+1]);
+     OSReport("fr%d \t= %d \t fr%d \t= %d\n", i, (u32)ctx->fprs[i], i + 1, (u32)ctx->fprs[i+1]);
 
 }
     OSClearContext(&fpuContext);

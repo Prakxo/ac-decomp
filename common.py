@@ -201,10 +201,13 @@ SYMBOLS = f"{PYTHON} {PPCDIS}/symbols.py"
 # Codewarrior
 TOOLS = "tools"
 CODEWARRIOR = os.path.join(TOOLS, "1.3.2")
+SDK_CW = os.path.join(TOOLS, "1.2.5")
 CC = os.path.join(CODEWARRIOR, "mwcceppc.exe")
+OCC = os.path.join(SDK_CW, "mwcceppc.exe")
 LD = os.path.join(CODEWARRIOR, "mwldeppc.exe")
 if platform != "win32":
     CC = f"wibo {CC}"
+    OCC = f"wibo {OCC}"
     LD = f"wibo {LD}"
 
 # DevkitPPC
@@ -315,7 +318,16 @@ LOCAL_CFLAGS = [
     f"-i {PPCDIS_INCDIR}",
     f"-i {BUILD_INCDIR}"
 ]
+
+SDK_CFLAG = [
+    "-O4,p",
+    "-inline all",
+    "-sdata 4",
+    f"-sdata2 {DOL_SDATA2_SIZE}"
+]
+
 DOL_CFLAGS = ' '.join(BASE_DOL_CFLAGS + LOCAL_CFLAGS)
+SDK_FLAGS = ' '.join(SDK_CFLAG + LOCAL_CFLAGS)
 REL_CFLAGS = ' '.join(BASE_REL_CFLAGS + LOCAL_CFLAGS)
 EXTERNAL_DOL_CFLAGS = ' '.join(BASE_DOL_CFLAGS)
 EXTERNAL_REL_CFLAGS = ' '.join(BASE_REL_CFLAGS)
@@ -331,6 +343,7 @@ PPCDIS_ANALYSIS_FLAGS = ' '.join([
     f"-l {EXTERNS}"
 ])
 
+
 ############
 # Contexts #
 ############
@@ -343,13 +356,14 @@ class SourceContext:
     labels: str
     relocs: str
     slices: str
+    compiler: str
     sdata2_threshold: int
     disasm_overrides: int
 
 DOL_CTX = SourceContext(DOL_SRCDIR, DOL_CFLAGS, DOL_YML, DOL_LABELS, DOL_RELOCS, DOL_SLICES,
-                        DOL_SDATA2_SIZE, DOL_DISASM_OVERRIDES)
+                        CC, DOL_SDATA2_SIZE, DOL_DISASM_OVERRIDES)
 REL_CTX = SourceContext(REL_SRCDIR, REL_CFLAGS, REL_YML, REL_LABELS, REL_RELOCS, REL_SLICES,
-                        REL_SDATA2_SIZE, REL_DISASM_OVERRIDES)
+                        CC, REL_SDATA2_SIZE, REL_DISASM_OVERRIDES)
 
 ####################
 # diff.py Expected #

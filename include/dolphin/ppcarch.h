@@ -26,7 +26,7 @@ void PPCMthid2(u32);
 
 void PPCMtwpar(u32);
 
-// void PPCDisableSpeculation(void);
+void PPCDisableSpeculation(void);
 void PPCSetFpNonIEEEMode(void);
 
 
