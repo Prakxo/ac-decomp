@@ -13,10 +13,10 @@ void bzero(void* __s, size_t __n) {
     memset(__s, 0, __n);
 }
 
-/* void osWritebackDCache(void* buf, u32 len){
-	 DCStoreRange();
+void osWritebackDCache(void* buf, u32 len){
+	 DCStoreRange(buf, len);
 }
- */
+
 /* s32 osGetCount(void){
 	return OSGetTick();
 }
