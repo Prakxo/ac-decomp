@@ -1,5 +1,5 @@
-#include "dolphin/OSContext.h"
-#include "dolphin/OSError.h"
+#include "dolphin/OS/OSContext.h"
+#include "dolphin/OS/OSError.h"
 static asm void __OSLoadFPUContext(int unused, register OSContext* ctx){
     nofralloc
     lhz r5, ctx->state

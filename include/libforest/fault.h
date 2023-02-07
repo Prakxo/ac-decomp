@@ -1,7 +1,7 @@
 #ifndef FAULT_H
 #define FAULT_H
 #include "types.h"
-#include "dolphin/os.h"
+#include "dolphin/OS/os.h"
 #include "libultra/libultra.h"
 
 

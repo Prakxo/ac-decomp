@@ -1,8 +1,8 @@
 #ifndef LIBULTRA_H
 #define LIBULTRA_H
 #include "types.h"
-#include "dolphin/OSTime.h"
-#include "dolphin/OSCache.h"
+#include "dolphin/OS/OSTime.h"
+#include "dolphin/OS/OSCache.h"
 int bcmp (void *v1, void *v2, u32 size);
 void bcopy(void *dst, void *src, size_t n);
 void bzero(void *ptr, size_t size);

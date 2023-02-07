@@ -1,4 +1,4 @@
-#include "dolphin/os.h"
+#include "dolphin/OS/os.h"
 
 asm BOOL OSEnableInterrupts(void){
 

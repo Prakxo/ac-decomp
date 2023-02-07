@@ -1,4 +1,4 @@
-#include "dolphin/OSMemory.h"
+#include "dolphin/OS/OSMemory.h"
 
 u32 OSGetConsoleSimulatedMemSize(void){
 	return(SIM_MEM);

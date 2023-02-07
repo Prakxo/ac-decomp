@@ -1,6 +1,8 @@
 #include "dolphin/OS/OSAlarm.h"
 #include "dolphin/OS/OSTime.h"
-#inlcude "dolphin/OS/OSContext.h"
+#include "dolphin/OS/OSContext.h"
+
+static void DecrementerExceptionHandler(u8, OSContext*);
 
 void OSInitAlarm(void){
 	

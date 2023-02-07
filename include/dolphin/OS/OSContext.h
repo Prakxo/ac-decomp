@@ -28,14 +28,14 @@ OSContext* OS_CURRENT_CONTEXT_PHYS : 0x800000C0;
 OSContext* OS_CURRENT_CONTEXT : 0x800000D4;
 OSContext* OS_CURRENT_FPU_CONTEXT : 0x800000D8;
 
-asm void OSSaveFPUContext(OSContext*);
-asm void OSSetCurrentContext(OSContext*);
+void OSSaveFPUContext(OSContext*);
+void OSSetCurrentContext(OSContext*);
 OSContext* OSGetCurrentContext(void);
-asm BOOL OSSaveContext(OSContext*);
-asm void OSLoadContext(OSContext*);
-asm void* OSGetStackPointer(void);
+BOOL OSSaveContext(OSContext*);
+void OSLoadContext(OSContext*);
+void* OSGetStackPointer(void);
 void OSClearContext(OSContext*);
-asm void OSInitContext(register OSContext* ctx, register u32 srr, register sp);
+void OSInitContext(register OSContext*, register u32 srr, register u32 sp);
 void OSDumpContext(const OSContext*);
 
 void __OSContextInit(void);

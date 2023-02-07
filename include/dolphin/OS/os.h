@@ -2,7 +2,7 @@
 #define _DOLPHIN_OS
 
 #include "types.h"
-#include "dolphin/OSContext.h"
+#include "dolphin/OS/OSContext.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

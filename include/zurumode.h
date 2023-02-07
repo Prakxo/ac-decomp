@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-#include "dolphin/os.h"
+#include "dolphin/OS/os.h"
 #include "libultra/libultra.h"
 #include "JSystem/JUT/JUTAssertion.h"
 #include "JSystem/JUT/JUTDbPrint.h"
