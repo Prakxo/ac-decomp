@@ -82,6 +82,7 @@ n.variable("elf2rel", c.ELF2REL)
 n.variable("codewarrior", c.CODEWARRIOR)
 n.variable("cc", c.CC)
 n.variable("occ", c.OCC)
+n.variable("align16", c.ALIGN16)
 n.variable("ld", c.LD)
 n.variable("devkitppc", c.DEVKITPPC)
 n.variable("as", c.AS)
@@ -575,6 +576,9 @@ class CSource(Source):
         if path.startswith("src/dolphin/"):
             self.cflags = c.SDK_FLAGS
             self.cc = c.OCC
+        elif path.startswith("src/odenotstub"):
+            self.cc = c.CC
+            self.cflags = c.ALIGN16
         else:
             self.cflags = ctx.cflags
             self.cc = c.CC

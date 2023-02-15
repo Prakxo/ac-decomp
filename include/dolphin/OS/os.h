@@ -3,11 +3,13 @@
 
 #include "types.h"
 #include "dolphin/OS/OSContext.h"
+#include "va_args.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 void OSReport(const char*, ...);
+void OSVReport(const char* format, va_list list);
 
 asm BOOL OSDisableInterrupts(void);
 asm BOOL OSEnableInterrupts(void);

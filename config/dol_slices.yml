@@ -22,8 +22,15 @@ dolphin/OS/OSRestoreInterrupts.c:
 MSL_C/rand.c:
     .text: [0x8009f46c, 0x8009f494]
     .sdata: [0x80218260, 0x80218268]
-libultra/ultra.c:
-    .text: [0x8005d01c, 0x8005d090]
+#libultra/ultra.c:
+#    .text: [0x8005d01c, 0x8005d15c]
+#    .bss: [0x80206f60, 0x80206fa0]
 libultra/gu/sins.c:
     .text: [0x8005e860, 0x8005e8ac]
     .data: [0x800dd360, 0x800ddb60]
+dolphin/odenotstub/odenotstub.c:
+    .text: [0x800a9770, 0x800a9780]
+dolphin/amcstubs/AmcExi2Stubs.c:
+    .text: [0x800a8cc0, 0x800a8cf0]
+dolphin/gx/GXStubs.c:
+    .text: [0x800998d4, 0x800998d8]

@@ -1,6 +1,7 @@
-#pragma once
+#ifndef _MEM_H
+#define _MEM_H
 
-#include <stddef.h>
+#include "types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,5 +16,6 @@ void __fill_mem(void * dst, int val, unsigned long n);
 #pragma section code_type
 
 #ifdef __cplusplus
-}
+};
+#endif
 #endif

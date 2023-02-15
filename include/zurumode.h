@@ -5,8 +5,8 @@
 
 #include "dolphin/OS/os.h"
 #include "libultra/libultra.h"
-#include "JSystem/JUT/JUTAssertion.h"
-#include "JSystem/JUT/JUTDbPrint.h"
+//#include "JSystem/JUT/JUTAssertion.h"
+//#include "JSystem/JUT/JUTDbPrint.h"
 
 typedef struct zuru_keycheck {
   u8 state;

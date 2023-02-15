@@ -5,7 +5,8 @@
 extern "C" {
 #endif
 
-asm s32 OSGetTime(void);
+typedef s64 OSTime;
+OSTime OSGetTime(void);
 
 #ifdef __cplusplus
 }

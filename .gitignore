@@ -13,3 +13,4 @@ dump/*
 *.exe
 *.dll
 build.ninja
+ac-decomp.code-workspace

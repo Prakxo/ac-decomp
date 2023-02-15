@@ -1,4 +1,9 @@
 #include "libultra/libultra.h"
+#include "_mem.h"
+#include "dolphin/OS/os.h"
+#include "dolphin/OS/OSTime.h"
+
+extern OSTime __osTimeOffset;
 
 void bcopy(void* __src, void* __dst, size_t __n) {
     memmove(__dst, __src, __n);
@@ -12,12 +17,18 @@ int bcmp(void* __s1, void* __s2, size_t __n) {
 void bzero(void* __s, size_t __n) {
     memset(__s, 0, __n);
 }
+void osSyncPrintf(const char* format, ...){
+    va_list arg;
+    va_start(arg, format);
+    OSVReport(format, arg);
+    va_end(arg);
 
-//void osWritebackDCache(void* buf, u32 len){
-//	 DCStoreRange(buf, len);
-//}
+}
+void osWritebackDCache(void* buf, u32 len){
+	 DCStoreRange(buf, len);
+}
 
-/* s32 osGetCount(void){
+u32 osGetCount(void){
 	return OSGetTick();
 }
- */
+
