@@ -97,6 +97,7 @@ n.newline()
 n.variable("asflags", c.ASFLAGS)
 n.variable("ldflags", c.LDFLAGS)
 n.variable("cppflags", c.CPPFLAGS)
+n.variable("cplflags", c.CPLFLAGS)
 n.variable("ppcdis_analysis_flags", c.PPCDIS_ANALYSIS_FLAGS)
 n.newline()
 
@@ -576,9 +577,9 @@ class CSource(Source):
         if path.startswith("src/dolphin/"):
             self.cflags = c.SDK_FLAGS
             self.cc = c.OCC
-        elif path.startswith("src/odenotstub"):
+        elif path.startswith("src/jaudio_NES"):
             self.cc = c.CC
-            self.cflags = c.ALIGN16
+            self.cflags = c.DOL_CPPFLAGS
         else:
             self.cflags = ctx.cflags
             self.cc = c.CC

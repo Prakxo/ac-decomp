@@ -1,5 +1,5 @@
 #include "zurumode.h"
-
+#include "libultra/libultra.h"
 void zurumode_init(void){
     zurumode_flag = 0;
     zerucheck_init(&zuruKeyCheck);

@@ -1,5 +1,6 @@
 #ifndef LIBULTRA_H
 #define LIBULTRA_H
+
 #include "types.h"
 #include "dolphin/OS/OSTime.h"
 #include "dolphin/OS/OSCache.h"
@@ -12,6 +13,6 @@ void osWritebackDCache(void* vaddr, u32 nbytes);
 u32 osGetCount(void);
 OSTime osGetTime(void);
 
-extern s32 osAppNMIBuffer[15]; 
+s32 osAppNMIBuffer[15]; 
 
-#endif 
+#endif

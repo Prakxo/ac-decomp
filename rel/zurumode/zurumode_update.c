@@ -1,5 +1,5 @@
 #include "zurumode.h"
-
+#include "libultra/libultra.h"
 s32 zurumode_update() {
     s32 flag_now;
     s32 zurumode_now;

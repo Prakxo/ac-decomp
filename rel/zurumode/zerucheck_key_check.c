@@ -1,4 +1,5 @@
 #include "zurumode.h"
+#include "libultra/libultra.h"
 
 /**
  * @brief Checks that the current controller state is correct
