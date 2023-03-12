@@ -1,6 +1,14 @@
+#dolphin/os/__start.c:
+#    .init: [0x80003100, 0x80003354]
 dolphin/__ppc_eabi_init.cpp:
     .init: [0x80003354, 0x800033a8]
     .text: [0x8007fdfc, 0x8007fe90]
+runtime/__mem.c:
+    .init: [0x800033a8, 0x800034e0]
+TRK/mem_TRK.c:
+    .init: [0x800034e0, 0x80003534]
+asm/__exception.s:
+    .init: [0x80003534, 0x80005468]
 jaudio_NES/dummyprobe.c:
     .text: [0x800083f8, 0x80008400]
 #jaudio_NES/verysimple.c:
@@ -8,9 +16,25 @@ jaudio_NES/dummyprobe.c:
 #    .sdata: [0x80217b80, 0x80217b88]
 libforest/ReconfigBATs.c:
     .text: [0x8005adac, 0x8005aed4]
+#libu64/debug.c: //not match
+#    .text: [0x8005aed4, 0x8005af30]
+#    .data: [0x800dc7c8, 0x800dc7f0]
 #libu64/gfxprint.c: specify ranges later
 libc64/aprintf.c:
     .text: [0x8005cbdc, 0x8005cc14]
+#libc64/math64.c: //not match
+#    .text: [0x8005cc14, 0x8005cccc]
+#    .sdata2: [0x80219118, 0x80219130]
+libc64/qrand.c:
+    .text: [0x8005cccc, 0x8005cd64]
+    .sdata: [0x80217de8, 0x80217df0]
+    .sbss: [0x80218640, 0x80218648]
+    .sdata2: [0x80219130, 0x80219138]
+#libc64/sprintf.c:
+#    .text: [0x8005ce18, 0x8005cf08]
+#libc64/malloc.c:
+#    .text: [0x8005cf08, 0x8005d01c]
+#    .bss: [0x80206F30, 0x80206F60]
 #libultra/ultra.c:                  won't link
 #    .text: [0x8005d01c, 0x8005d15c]
 #    .bss: [0x80206f60, 0x80206fa0]
