@@ -37,6 +37,7 @@ RUN git clone https://github.com/decompals/ultralib.git /N64_SDK/ultra/usr/
 ## modify Gpopmtx's param member to be unsigned int
 RUN sed -i 's/unsigned char	param:8;/unsigned int	param:8;/g' /N64_SDK/ultra/usr/include/PR/gbi.h
 
+# --- set up work directory and env vars---
 RUN mkdir /ac-decomp
 WORKDIR /ac-decomp
 ENV PATH="/ac-decomp/tools:${PATH}"
