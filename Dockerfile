@@ -25,14 +25,14 @@ RUN sed -ie 's/^apt-get.*$/& -y/g' install-devkitpro-pacman
 RUN ./install-devkitpro-pacman
 RUN dkp-pacman -S devkitPPC --noconfirm
 
-# --- stage libreultra headers ---
-RUN git clone https://github.com/n64decomp/libreultra.git libreultra
+# --- stage ultralib headers ---
+RUN git clone https://github.com/decompals/ultralib.git
 ## remove the things we don't need
-RUN rm -rf libreultra/src/ libreultra/tools/ && rm libreultra/.gitignore libreultra/Makefile
+RUN rm -rf ultralib/!(include)
 ## modify Gpopmtx's param member to be unsigned int
-RUN cd libreultra/include/2.0I/PR/ && sed -i 's/unsigned char       param:8;/unsigned int   param:8;/g' gbi.h
+RUN cd ultralib/include/PR/ && sed -i 's/unsigned char       param:8;/unsigned int   param:8;/g' gbi.h
 ## move headers to /N64_SDK/ultra/usr/ and delete the old directory
-RUN mkdir -p /N64_SDK/ultra/usr/ && mv libreultra/include/ /N64_SDK/ultra/usr/ && rm -r libreultra
+RUN mkdir -p /N64_SDK/ultra/usr/ && mv ultralib/include/ /N64_SDK/ultra/usr/ && rm -r ultralib
 
 RUN mkdir /ac-decomp
 WORKDIR /ac-decomp
