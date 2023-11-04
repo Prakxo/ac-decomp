@@ -4,15 +4,15 @@
 
 Decompilation in progress of Animal Crossing (GAFE01)
 
-An N64 version of the game is being worked on [here](https://github.com/zeldaret/af)
+A decompilation of the original N64 version of the game is being worked on [here](https://github.com/zeldaret/af).
 ## Cloning
 
 Use `--recursive` when cloning to have ppcdis in the repository. 
 
 ## Build
 
-**It's preferible to use [wibo](https://github.com/decompals/wibo), a lightweight
-Wine replacement to work with the compilers, but Wine is still usable**
+**It's preferable to use [wibo](https://github.com/decompals/wibo), a lightweight
+Wine replacement that's made to work with the compilers, but Wine is still usable.**
 
 ### Building (Docker)
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
@@ -36,8 +36,8 @@ Wine replacement to work with the compilers, but Wine is still usable**
 	- Headers should be at `$N64_SDK/ultra/usr/include`.
     - You may need to modify `Gpopmtx`'s `param` member to be `unsigned int`.
 7. Install DevkitPPC, Ninja and Python 3.
-	- Set the environment variable DEVKITPPC to `/opt/devkitpro/devkitPPC`
-8. Install Python modules from requirements.txt (`pip install -r requirements.txt`)
+	- Set the environment variable DEVKITPPC to `/opt/devkitpro/devkitPPC`.
+8. Install Python modules from requirements.txt (`pip install -r requirements.txt`).
 9. Run `python3 configure.py`.
 10. Run `ninja`.
 
