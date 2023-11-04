@@ -10,8 +10,12 @@ RUN apt-get update && \
         python3 \
         python3-pip \
         wget
-## TODO: Don't hardcode python deps, and install them from requirements.txt instead where possible.
-RUN pip install ninja ninja_syntax prettytable colorama capstone==5.0.1 pyelftools pylibyaml PyYAML watchdog python-Levenshtein cxxfilt
+# --- python package installation ---
+COPY ./requirements.txt /temp/requirements.txt
+COPY ./tools/ppcdis/requirements.txt /temp/tools/ppcdis/requirements.txt
+RUN pip install ninja watchdog python-Levenshtein cxxfilt
+RUN pip install -r /temp/requirements.txt
+RUN rm -rf /temp
 
 # --- wibo installation ---
 RUN wget https://github.com/decompals/wibo/releases/latest/download/wibo
@@ -38,5 +42,5 @@ ENV PATH="/ac-decomp/tools:${PATH}"
 ENV N64_SDK="/N64_SDK"
 ENV DEVKITPPC="/opt/devkitpro/devkitPPC"
 
-CMD echo 'usage: docker run -dit --rm --mount type=bind,source="$(pwd)",destination=/ac-decomp ac-decomp \n' \
-         'see https://github.com/Prakxo/ac-decomp/blob/master/README.md for advanced usage'
+CMD echo 'Usage: docker run -it --rm --name ac-decomp --mount type=bind,source="$(pwd)",destination=/ac-decomp ac-decomp python3 configure.py && ninja\n'\
+         'See https://github.com/Prakxo/ac-decomp/blob/master/README.md for more information'
