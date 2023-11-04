@@ -10,6 +10,7 @@ RUN apt-get update && \
         python3 \
         python3-pip \
         wget
+
 # --- python package installation ---
 COPY ./requirements.txt /temp/requirements.txt
 COPY ./tools/ppcdis/requirements.txt /temp/tools/ppcdis/requirements.txt
