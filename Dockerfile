@@ -38,6 +38,7 @@ RUN mkdir /ac-decomp
 WORKDIR /ac-decomp
 ENV PATH="/ac-decomp/tools:${PATH}"
 ENV N64_SDK="/N64_SDK"
+ENV DEVKITPPC="/opt/devkitpro/devkitPPC"
 
 CMD echo 'usage: docker run -dit --rm --mount type=bind,source="$(pwd)",destination=/ac-decomp ac-decomp\n'
 CMD bash
