@@ -22,8 +22,8 @@ Wine replacement that's made to work with the compilers, but Wine is still usabl
 5. Download [CodeWarrior 1.3.2r](https://mega.nz/file/WuBFTCLT#TmB5R4-1mEFkk4G1Vjn9_cHXRD9wOIH9CtOLaVSWEas) and extract it to *tools/1.3.2r/*.
 6. Install Docker.
 7. Run `docker build -t ac-decomp .` to build the Docker image.
-8. Run `docker run -it --rm --name ac-decomp --mount type=bind,source="$(pwd)",destination=/ac-decomp ac-decomp python3 configure.py` to run configure.py.
-9. Run `docker run -it --rm --name ac-decomp --mount type=bind,source="$(pwd)",destination=/ac-decomp ac-decomp ninja` to run Ninja.
+8. Run `docker run -it --rm -v $(pwd):/ac-decomp ac-decomp python3 configure.py` to run configure.py.
+9. Run `docker run -it --rm -v $(pwd):/ac-decomp ac-decomp ninja` to run Ninja.
 
 ### Building (manual)
 
