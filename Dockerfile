@@ -26,7 +26,7 @@ RUN install ./wibo /usr/bin
 RUN wget https://apt.devkitpro.org/install-devkitpro-pacman
 RUN chmod +x install-devkitpro-pacman
 ## assume yes for in-script apt commands
-RUN sed -ie 's/^apt-get.*$/& -y/g' install-devkitpro-pacman
+RUN sed -i 's/^apt-get.*$/& -y/g' install-devkitpro-pacman
 ## now do dkp-pacman installation, then install devkitPPC
 RUN ./install-devkitpro-pacman
 RUN dkp-pacman -S devkitPPC --noconfirm
