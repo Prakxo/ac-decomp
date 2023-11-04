@@ -10,7 +10,7 @@ RUN apt-get update && \
         python3 \
         python3-pip \
         wget
-RUN pip install ninja ninja_syntax prettytable
+RUN pip install ninja ninja_syntax prettytable colorama capstone==5.0.1 pyelftools pylibyaml PyYAML
 
 # --- wibo installation ---
 RUN wget https://github.com/decompals/wibo/releases/latest/download/wibo
