@@ -10,10 +10,6 @@ A decompilation of the original N64 version of the game is being worked on [here
 Use `--recursive` when cloning to have ppcdis in the repository. 
 
 ## Build
-
-**It's preferable to use [wibo](https://github.com/decompals/wibo), a lightweight
-Wine replacement that's made to work with the compilers, but Wine is still usable.**
-
 ### Building (Docker)
 > ℹ️ When using Windows, use a shell such as PowerShell or Bash instead of the Command Prompt.
 
@@ -28,6 +24,9 @@ Wine replacement that's made to work with the compilers, but Wine is still usabl
 9. Run `docker run -it --rm -v ${PWD}:/ac-decomp ac-decomp ninja` to run Ninja.
 
 ### Building (manual)
+
+**It's preferable to use [wibo](https://github.com/decompals/wibo), a lightweight
+Wine replacement that's made to work with the compilers, but Wine is still usable.**
 
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*.
