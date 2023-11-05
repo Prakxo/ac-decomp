@@ -38,25 +38,23 @@ public:
     JKRExpHeap(void *, u32, JKRHeap *, bool);
 
     virtual ~JKRExpHeap();                                            // _08
-    virtual u32 getHeapType() { return 'EXPH'; }                      // _10 (weak)
-    virtual bool check();                                             // _14
-    virtual bool dump_sort();                                         // _18
-    virtual bool dump();                                              // _1C
-    virtual void do_destroy();                                        // _20
-    virtual void *do_alloc(u32, int);                                 // _24
-    virtual void do_free(void *);                                     // _28
-    virtual void do_freeAll();                                        // _2C
-    virtual void do_freeTail();                                       // _30
-    virtual void do_fillFreeArea();                                   // _34
-    virtual s32 do_resize(void *, u32);                               // _38
-    virtual s32 do_getSize(void *);                                   // _3C
-    virtual s32 do_getFreeSize();                                     // _40
-    virtual void *do_getMaxFreeBlock();                               // _44
-    virtual s32 do_getTotalFreeSize();                                // _48
-    virtual s32 do_changeGroupID(u8);                                 // _4C
-    virtual u8 do_getCurrentGroupId() { return mCurrentGroupID; }     // _50 (weak)
-    virtual void state_register(TState *, u32) const;                 // _54
-    virtual bool state_compare(const TState &, const TState &) const; // _58
+    virtual void *do_alloc(u32, int);                                 // _10
+    virtual void do_free(void *);                                     // _14
+    virtual void do_freeTail();                                       // _18
+    virtual void do_freeAll();                                        // _1C
+    virtual s32 do_resize(void *, u32);                               // _20
+    virtual s32 do_getSize(void *);                                   // _24
+    virtual s32 do_getFreeSize();                                     // _28
+    virtual s32 do_getTotalFreeSize();                                // _2C
+    virtual bool check();                                             // _34
+    virtual bool dump_sort();                                         // _38
+    virtual bool dump();                                              // _3C
+    virtual s32 do_changeGroupID(u8);                                 // _40
+    virtual void state_register(TState *, u32) const;                 // _48
+    virtual bool state_compare(const TState &, const TState &) const; // _4C   
+    
+    virtual u8 do_getCurrentGroupId() { return mCurrentGroupID; }     // _44 (weak)
+    virtual u32 getHeapType() { return 'EXPH'; }                      // _30 (weak)
 
     void *allocFromHead(u32, int);
     void *allocFromHead(u32);
