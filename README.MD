@@ -16,7 +16,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*.
 3. Place **main.dol** and **foresta.rel** in *dump/*.
-4. Place CodeWarrior 1.3.2 in *tools/1.3.2/* and 1.2.5n in *tools/1.2.5n/*.
+4. Place the [CodeWarrior 1.3.2 and 1.2.5n compilers](https://files.decomp.dev/compilers_20230715.zip) in *tools/1.3.2/* and *tools/1.2.5n/*, respectively.
 5. Download [CodeWarrior 1.3.2r](https://mega.nz/file/WuBFTCLT#TmB5R4-1mEFkk4G1Vjn9_cHXRD9wOIH9CtOLaVSWEas) and extract it to *tools/1.3.2r/*.
 6. Install Docker.
 7. Run `docker build -t ac-decomp .` to build the Docker image.
@@ -31,7 +31,7 @@ Wine replacement that's made to work with the compilers, but Wine is still usabl
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*.
 3. Place **main.dol** and **foresta.rel** in *dump/*.
-4. Place CodeWarrior 1.3.2 in *tools/1.3.2/* and 1.2.5n in *tools/1.2.5n/*.
+4. Place the [CodeWarrior 1.3.2 and 1.2.5n compilers](https://files.decomp.dev/compilers_20230715.zip) in *tools/1.3.2/* and *tools/1.2.5n/*, respectively.
 5. Download [CodeWarrior 1.3.2r](https://mega.nz/file/WuBFTCLT#TmB5R4-1mEFkk4G1Vjn9_cHXRD9wOIH9CtOLaVSWEas) and extract it to *tools/1.3.2r/*.
 6. Set the `N64_SDK` environment variables with the path of your libultra or equivalent headers.
 	- Headers should be at `$N64_SDK/ultra/usr/include`.
