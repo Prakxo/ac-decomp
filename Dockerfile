@@ -30,7 +30,7 @@ RUN sed -i 's/^apt-get.*$/& -y/g' install-devkitpro-pacman
 ## now do dkp-pacman installation, then install devkitPPC
 RUN ./install-devkitpro-pacman
 ## workaround for a dumb WSL bug that happens with Windows Docker. if we don't do this, devkitPPC installation fails.
-RUN if [ ! -d /etc/mtab ]; then ln -s /proc/self/mounts /etc/mtab; else continue; fi
+RUN if [ ! -e /etc/mtab ]; then ln -s /proc/self/mounts /etc/mtab; fi
 RUN dkp-pacman -S devkitPPC --noconfirm
 
 # --- stage ultralib headers ---
