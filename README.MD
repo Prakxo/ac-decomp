@@ -15,7 +15,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 Wine replacement that's made to work with the compilers, but Wine is still usable.**
 
 ### Building (Docker)
-> 🛈 When using Windows, use a shell such as PowerShell or Bash instead of the Command Prompt.
+> ℹ️ When using Windows, use a shell such as PowerShell or Bash instead of the Command Prompt.
 
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*.
