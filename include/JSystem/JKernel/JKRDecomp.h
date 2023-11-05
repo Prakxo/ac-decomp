@@ -6,11 +6,6 @@
 #include "JSystem/JKernel/JKRThread.h"
 #include "JSystem/JKernel/JKRAram.h"
 
-#define JKRCOMPRESSION_NONE 0
-#define JKRCOMPRESSION_YAY0 1
-#define JKRCOMPRESSION_YAZ0 2
-#define JKRCOMPRESSION_ASR 3
-
 #define JKRDECOMP_MSG_BUF_COUNT 4
 #define JKRDECOMP_STACK_SIZE 0x4000
 #define JKRDECOMP_THREAD_MSG_BUF_COUNT 16

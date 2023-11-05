@@ -51,6 +51,9 @@ typedef u32 unknown;
 #define IS_ALIGNED(X, N) (((X) & ((N)-1)) == 0)
 #define IS_NOT_ALIGNED(X, N) (((X) & ((N)-1)) != 0)
 
+#define FLAG_ON(V, F) (((V) & (F)) == 0)
+#define FLAG_OFF(V, F) (((V) & (F)) != 0)
+
 #ifndef ATTRIBUTE_ALIGN
 #if defined(__MWERKS__) || defined(__GNUC__)
 #define ATTRIBUTE_ALIGN(num) __attribute__((aligned(num)))

@@ -167,6 +167,10 @@ JSystem/JKernel/JKRFileLoader.cpp:
     .bss: [0x80207080, 0x80207098]
     .sdata: [0x80217f38, 0x80217f50]
     .sbss: [0x80218768, 0x80218770]
+JSystem/JKernel/JKRFileFinder.cpp:
+    .text: [0x800685b0, 0x80068744]
+    .data: [0x800de670, 0x800de6b0]
+    .sdata: [0x80217f50, 0x80217f60]
 JSystem/JKernel/JKRDvdFile.cpp:
     .text: [0x8006b8a4, 0x8006be0c]
     .ctors: [0x800a97a0, 0x800a97a4]
