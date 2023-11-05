@@ -48,6 +48,8 @@ typedef u32 unknown;
 
 #define ALIGN_PREV(u, align) (u & (~(align-1)))
 #define ALIGN_NEXT(u, align) ((u + (align-1)) & (~(align-1)))
+#define IS_ALIGNED(X, N) (((X) & ((N)-1)) == 0)
+#define IS_NOT_ALIGNED(X, N) (((X) & ((N)-1)) != 0)
 
 #ifndef ATTRIBUTE_ALIGN
 #if defined(__MWERKS__) || defined(__GNUC__)

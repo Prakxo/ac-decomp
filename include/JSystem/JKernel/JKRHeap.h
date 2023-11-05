@@ -110,7 +110,7 @@ public:
     void freeTail();
     void fillFreeArea();
     void resize(void *, u32);
-    static s32 getSize(void *, JKRHeap*);
+    static s32 getSize(void *, JKRHeap *);
 
     // ... more functions
 
@@ -150,6 +150,31 @@ public:
         {
             (*mErrorHandler)(heap, size, alignment);
         }
+    }
+
+    // TState related
+    static u32 getState_buf_(TState *state) { return state->mBuf; } // might instead be a pointer to a next state?
+    static void setState_u32ID_(TState *state, u32 id)
+    {
+        state->mArgument.mId = id;
+    }
+    static void setState_uUsedSize_(TState *state, u32 usedSize)
+    {
+        state->mUsedSize = usedSize;
+    }
+    static void setState_u32CheckCode_(TState *state, u32 checkCode) { state->mCheckCode = checkCode; }
+
+    void lock() const { OSLockMutex(const_cast<OSMutex *>(&mMutex)); }
+    void unlock() const { OSUnlockMutex(const_cast<OSMutex *>(&mMutex)); }
+
+    JKRHeap *getParent()
+    {
+        return mChildTree.getParent()->getObject();
+    }
+
+    const JSUTree<JKRHeap> &getHeapTree()
+    {
+        return mChildTree;
     }
 
     // Unused
@@ -265,6 +290,11 @@ inline void *JKRAllocFromHeap(JKRHeap *heap, u32 size, int alignment)
 inline void JKRFree(void *pBuf)
 {
     JKRHeap::free(pBuf, nullptr);
+}
+
+inline void JKRFreeToHeap(JKRHeap *heap, void *ptr)
+{
+    JKRHeap::free(ptr, heap);
 }
 
 inline void JKRFreeToSysHeap(void *buf)

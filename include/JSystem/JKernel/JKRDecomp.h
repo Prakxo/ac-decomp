@@ -6,6 +6,11 @@
 #include "JSystem/JKernel/JKRThread.h"
 #include "JSystem/JKernel/JKRAram.h"
 
+#define JKRCOMPRESSION_NONE 0
+#define JKRCOMPRESSION_YAY0 1
+#define JKRCOMPRESSION_YAZ0 2
+#define JKRCOMPRESSION_ASR 3
+
 #define JKRDECOMP_MSG_BUF_COUNT 4
 #define JKRDECOMP_STACK_SIZE 0x4000
 #define JKRDECOMP_THREAD_MSG_BUF_COUNT 16
@@ -78,6 +83,14 @@ inline JKRDecomp* JKRCreateDecompManager(s32 priority) {
   return JKRDecomp::create(priority);
 }
 
+inline int JKRCheckCompressed_noASR(u8 *pBuf)
+{
+  int compression = JKRDecomp::checkCompressed(pBuf);
+  if (compression == JKRCOMPRESSION_ASR)
+    compression = JKRCOMPRESSION_NONE;
+  return compression;
+}
+
 inline JKRDecomp::CompressionMode JKRCheckCompressed(u8* buf) {
   return JKRDecomp::checkCompressed(buf);
 }
@@ -89,5 +102,9 @@ inline u32 JKRDecompExpandSize(u8* buf) {
 inline void JKRDecompress(u8* src, u8* dst, u32 srcLength, u32 skipCount) {
   JKRDecomp::orderSync(src, dst, srcLength, skipCount);
 }
+
+//int JKRDecompressFromDVD(JKRDvdFile *, void *, u32, u32, u32, u32, u32 *);
+//int JKRDecompressFromDVDToAram(JKRDvdFile *, u32, u32, u32, u32, u32, u32 *);
+int JKRDecompressFromAramToMainRam(u32, void *, u32, u32, u32);
 
 #endif

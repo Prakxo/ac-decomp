@@ -1,6 +1,7 @@
 #ifndef JKRDVDFILE_H
 #define JKRDVDFILE_H
 
+#include "JSystem/JKernel/JKRAram.h"
 #include "JSystem/JKernel/JKRFile.h"
 #include "JSystem/JSupport/JSUStream.h"
 

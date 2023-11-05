@@ -13,6 +13,11 @@ struct SZPHeader {
   u32 decompSize;
 };
 
+struct SYaz0Header {
+  u32 signature;
+  u32 length;
+};
+
 class JKRDMCommand {
   JKRDMCommand();
   ~JKRDMCommand();
