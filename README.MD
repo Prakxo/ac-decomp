@@ -15,6 +15,8 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 Wine replacement that's made to work with the compilers, but Wine is still usable.**
 
 ### Building (Docker)
+> 🛈 When using Windows, use a shell such as PowerShell or Bash instead of the Command Prompt.
+
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*.
 3. Place **main.dol** and **foresta.rel** in *dump/*.
@@ -22,8 +24,8 @@ Wine replacement that's made to work with the compilers, but Wine is still usabl
 5. Download [CodeWarrior 1.3.2r](https://mega.nz/file/WuBFTCLT#TmB5R4-1mEFkk4G1Vjn9_cHXRD9wOIH9CtOLaVSWEas) and extract it to *tools/1.3.2r/*.
 6. Install Docker.
 7. Run `docker build -t ac-decomp .` to build the Docker image.
-8. Run `docker run -it --rm -v $(pwd):/ac-decomp ac-decomp python3 configure.py` to run configure.py.
-9. Run `docker run -it --rm -v $(pwd):/ac-decomp ac-decomp ninja` to run Ninja.
+8. Run `docker run -it --rm -v ${PWD}:/ac-decomp ac-decomp python3 configure.py` to run configure.py.
+9. Run `docker run -it --rm -v ${PWD}:/ac-decomp ac-decomp ninja` to run Ninja.
 
 ### Building (manual)
 
