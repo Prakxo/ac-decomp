@@ -155,6 +155,11 @@ JSystem/JKernel/JKRAramPiece.cpp:
     .data: [0x800de510, 0x800de568]
     .bss: [0x80207050, 0x80207080]
     .sdata: [0x80217f10, 0x80217f18]
+JSystem/JKernel/JKRAramStream.cpp:
+    .text: [0x80067a88, 0x80067ff4]
+    .data: [0x800de568, 0x800de608]
+    .sdata: [0x80217f18, 0x80217f38]
+    .sbss: [0x80218758, 0x80218768]
 JSystem/JKernel/JKRDvdFile.cpp:
     .text: [0x8006b8a4, 0x8006be0c]
     .ctors: [0x800a97a0, 0x800a97a4]
