@@ -3,10 +3,7 @@ FROM ubuntu:22.04 as build
 # --- basic package installation ---
 RUN apt-get update && \
     apt-get install -y \
-        build-essential \
         git \
-        pkgconf \
-        apt-utils \
         python3 \
         python3-pip \
         wget
