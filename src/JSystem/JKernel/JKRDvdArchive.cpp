@@ -42,14 +42,8 @@ JKRDvdArchive::~JKRDvdArchive()
                 fileEntries++;
             }
             JKRFreeToHeap(mHeap, mArcInfoBlock);
-            mArcInfoBlock = nullptr;
         }
 
-        /*if (mExpandSizes)
-        {
-            JKRFree(mExpandSizes);
-            mExpandSizes = nullptr;
-        }*/
         if (mDvdFile)
         {
             delete mDvdFile;
@@ -85,8 +79,7 @@ bool JKRDvdArchive::open(long entryNum)
     }
     else
     {
-        JKRDvdToMainRam(entryNum, (u8 *)mem, EXPAND_SWITCH_DEFAULT, 32, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, 0, &mCompression);
-        DCInvalidateRange(mem, 32);
+        JKRDvdToMainRam(entryNum, (u8 *)mem, EXPAND_SWITCH_DECOMPRESS, 32, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, 0, &mCompression);
         int alignment = mMountDirection == MOUNT_DIRECTION_HEAD ? 32 : -32;
 
         mArcInfoBlock = (SArcDataInfo *)JKRAllocFromHeap(mHeap, mem->mSize, alignment);
@@ -97,37 +90,10 @@ bool JKRDvdArchive::open(long entryNum)
         else
         {
             JKRDvdToMainRam(entryNum, (u8 *)mArcInfoBlock, EXPAND_SWITCH_DECOMPRESS, mem->mSize, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, 32, nullptr);
-            DCInvalidateRange(mArcInfoBlock, mem->mSize);
 
             mDirectories = (SDIDirEntry *)((u8 *)mArcInfoBlock + mArcInfoBlock->node_offset);
             mFileEntries = (SDIFileEntry *)((u8 *)mArcInfoBlock + mArcInfoBlock->file_entry_offset);
             mStrTable = (const char *)((u8 *)mArcInfoBlock + mArcInfoBlock->string_table_offset);
-            //mExpandSizes = nullptr;
-
-            u8 compressedFiles = 0; // maybe a check for if the last file is compressed?
-
-            SDIFileEntry *fileEntry = mFileEntries;
-            for (int i = 0; i < mArcInfoBlock->num_file_entries; i++)
-            {
-                u8 flag = fileEntry->mFlag >> 24;
-                if ((flag & 1))
-                {
-                    compressedFiles |= (flag & JKRARCHIVE_ATTR_COMPRESSION);
-                }
-                fileEntry++;
-            }
-
-            /*if (compressedFiles != 0)
-            {
-                mExpandSizes = (u32 *)JKRAllocFromHeap(mHeap, mArcInfoBlock->num_file_entries << 2, abs(alignment));
-                if (mExpandSizes == nullptr)
-                {
-                    JKRFreeToSysHeap(mArcInfoBlock);
-                    mMountMode = 0;
-                    goto cleanup;
-                }
-                memset(mExpandSizes, 0, mArcInfoBlock->num_file_entries << 2);
-            }*/
             _60 = mem->mDataOffset + mem->mSize; // End of data offset?
         }
     }
@@ -138,49 +104,33 @@ cleanup:
     }
     if (mMountMode == 0)
     {
-        JREPORT(":::Cannot alloc memory [%s][%d]\n", __FILE__, 397); // Macro?
+        JREPORTF(":::Cannot alloc memory [%s][%d]\n", __FILE__, 397); // Macro?
         if (mDvdFile != nullptr)
         {
             delete mDvdFile;
         }
-        return false;
     }
-    return true;
+    return mMountMode != 0;
 }
 
 void *JKRDvdArchive::fetchResource(SDIFileEntry *fileEntry, u32 *pSize)
 {
     JUT_ASSERT(isMounted());
-    u32 sizeptr;
-    u32 size;
+
+    u32 sizeRef;
     u8 *data;
-
-    if (pSize == nullptr)
-    {
-        pSize = &sizeptr;
-    }
-
-    int compression = JKRConvertAttrToCompressionType((u8)(fileEntry->mFlag >> 24));
 
     if (fileEntry->mData == nullptr)
     {
-        size = fetchResource_subroutine(mEntryNum, _60 + fileEntry->mDataOffset, fileEntry->mSize, mHeap, (int)compression, mCompression, &data);
-        *pSize = size;
-        if (size == 0)
-        {
-            return nullptr;
-        }
+        int compression = JKRConvertAttrToCompressionType(fileEntry->mFlag >> 0x18);
+        u32 size = fetchResource_subroutine(mEntryNum, _60 + fileEntry->mDataOffset, fileEntry->mSize, mHeap, (int)compression, mCompression, &data);
+
+        if (pSize)
+            *pSize = size;
+
         fileEntry->mData = data;
-        if (compression == JKRCOMPRESSION_YAZ0)
-        {
-            //setExpandSize(fileEntry, *pSize);
-        }
     }
-    else if (compression == JKRCOMPRESSION_YAZ0)
-    {
-        //*pSize = getExpandSize(fileEntry);
-    }
-    else
+    else if (pSize)
     {
         *pSize = fileEntry->mSize;
     }
@@ -190,41 +140,32 @@ void *JKRDvdArchive::fetchResource(SDIFileEntry *fileEntry, u32 *pSize)
 
 void *JKRDvdArchive::fetchResource(void *data, u32 compressedSize, SDIFileEntry *fileEntry, u32 *pSize, JKRExpandSwitch expandSwitch)
 {
-#line 504
     JUT_ASSERT(isMounted());
 
-    u32 fileSize = fileEntry->mSize;
-    u32 alignedSize = ALIGN_NEXT(fileSize, 32);
-    u32 fileFlag = fileEntry->mFlag >> 0x18;
-    int compression = JKRConvertAttrToCompressionType(fileFlag);
+    u32 fileSize = compressedSize & -32;
+    u32 alignedSize = ALIGN_NEXT(fileEntry->mSize, 32);
+
+    if (alignedSize > fileSize)
+    {
+        alignedSize = fileSize;
+    }
 
     if (fileEntry->mData == nullptr)
     {
-        fileSize = fetchResource_subroutine(mEntryNum, _60 + fileEntry->mDataOffset, fileEntry->mSize, (u8 *)data,
-                                            compressedSize & ~31, compression, mCompression);
+        int compression = JKRConvertAttrToCompressionType(fileEntry->mFlag >> 0x18);
+        if (expandSwitch != EXPAND_SWITCH_DECOMPRESS)
+            compression = 0;
+        alignedSize = fetchResource_subroutine(mEntryNum, _60 + fileEntry->mDataOffset, fileEntry->mSize, (u8 *)data,
+                                            fileSize, compression, mCompression);
     }
     else
     {
-        if (compression == JKRCOMPRESSION_YAZ0)
-        {
-            /*u32 expandSize = getExpandSize(fileEntry);
-            if (expandSize != 0)
-            {
-                fileSize = expandSize;
-            }*/
-        }
-
-        if (fileSize > compressedSize)
-        {
-            fileSize = compressedSize;
-        }
-
-        JKRHeap::copyMemory(data, fileEntry->mData, fileSize);
+        JKRHeap::copyMemory(data, fileEntry->mData, alignedSize);
     }
 
-    if (pSize != nullptr)
+    if (pSize)
     {
-        *pSize = fileSize;
+        *pSize = alignedSize;
     }
     return data;
 }
@@ -248,23 +189,20 @@ u32 JKRDvdArchive::fetchResource_subroutine(long entryNum, u32 offset, u32 size,
                 alignedSize = prevAlignedSize;
             }
             JKRDvdRipper::loadToMainRAM(entryNum, data, EXPAND_SWITCH_DEFAULT, alignedSize, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, offset, nullptr);
-            DCInvalidateRange(data, alignedSize);
             return alignedSize;
 
         case JKRCOMPRESSION_YAY0:
         case JKRCOMPRESSION_YAZ0:
-            u8 buf[64];
-            u8 *bufPtr = (u8 *)ALIGN_NEXT((u32)buf, 32);
-            JKRDvdRipper::loadToMainRAM(entryNum, bufPtr, EXPAND_SWITCH_NONE, sizeof(buf) / 2, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, offset, nullptr);
-            DCInvalidateRange(bufPtr, sizeof(buf) / 2);
-            u32 expandFileSize = JKRDecompExpandSize(bufPtr);
+            u8 *header = (u8 *)JKRAllocFromSysHeap(0x20, 0x20);
+            JKRDvdRipper::loadToMainRAM(entryNum, header, EXPAND_SWITCH_NONE, 0x20, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, offset, nullptr);
+            u32 expandFileSize = JKRDecompExpandSize(header);
+            JKRFreeToSysHeap(header);
             alignedSize = ALIGN_NEXT(expandFileSize, 32);
             if (alignedSize > prevAlignedSize)
             {
                 alignedSize = prevAlignedSize;
             }
             JKRDvdRipper::loadToMainRAM(entryNum, data, EXPAND_SWITCH_DECOMPRESS, alignedSize, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, offset, nullptr);
-            DCInvalidateRange(data, alignedSize);
             return expandFileSize;
         }
     }
@@ -275,18 +213,18 @@ u32 JKRDvdArchive::fetchResource_subroutine(long entryNum, u32 offset, u32 size,
             size = prevAlignedSize;
         }
         JKRDvdRipper::loadToMainRAM(entryNum, data, EXPAND_SWITCH_DECOMPRESS, size, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, offset, nullptr);
-        DCInvalidateRange(data, size);
         return size;
     }
 
     case JKRCOMPRESSION_YAY0:
     {
-        JUT_PANIC("Sorry, not applied for SZP archive.\n");
+        JPANIC(537, "Sorry, not prepared for SZP archive.\n");
+        return 0;
     }
 
     default:
     {
-        JUT_PANIC("??? bad sequence\n");
+        JPANIC(546, ":::??? bad sequence\n");
     }
     }
     return 0;
@@ -308,24 +246,20 @@ u32 JKRDvdArchive::fetchResource_subroutine(long entryNum, u32 offset, u32 size,
             JUT_ASSERT(buffer != 0);
 
             JKRDvdToMainRam(entryNum, buffer, EXPAND_SWITCH_DEFAULT, alignedSize, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, offset, nullptr);
-            DCInvalidateRange(buffer, alignedSize);
             *pBuf = buffer;
             return alignedSize;
 
         case JKRCOMPRESSION_YAY0:
         case JKRCOMPRESSION_YAZ0:
-            u8 decompBuf[64];
-            u8 *bufptr = (u8 *)ALIGN_NEXT((u32)decompBuf, 32);
-            JKRDvdToMainRam(entryNum, bufptr, EXPAND_SWITCH_NONE, sizeof(decompBuf) / 2, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, offset, nullptr);
-            DCInvalidateRange(bufptr, 0x20);
+            u8 *header = (u8 *)JKRAllocFromHeap(heap, 0x20, 0x20);
+            JKRDvdToMainRam(entryNum, header, EXPAND_SWITCH_NONE, 0x20, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, offset, nullptr);
 
-            alignedSize = JKRDecompExpandSize(bufptr);
-
-            buffer = (u8 *)JKRAllocFromHeap(heap, alignedSize, 32);
+            alignedSize = JKRDecompExpandSize(header);
+            JKRFreeToHeap(heap, header);
+            buffer = (u8 *)JKRAllocFromHeap(heap, alignedSize, 0x20);
             JUT_ASSERT(buffer);
 
             JKRDvdToMainRam(entryNum, buffer, EXPAND_SWITCH_DECOMPRESS, alignedSize, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, offset, nullptr);
-            DCInvalidateRange(buffer, alignedSize);
             *pBuf = buffer;
             return alignedSize;
         }
@@ -335,20 +269,20 @@ u32 JKRDvdArchive::fetchResource_subroutine(long entryNum, u32 offset, u32 size,
         buffer = (u8 *)JKRAllocFromHeap(heap, alignedSize, 32);
         JUT_ASSERT(buffer);
         JKRDvdToMainRam(entryNum, buffer, EXPAND_SWITCH_DECOMPRESS, size, nullptr, JKRDvdRipper::ALLOC_DIR_TOP, offset, nullptr);
-        DCInvalidateRange(buffer, size);
         *pBuf = buffer;
         return alignedSize;
     }
 
     case JKRCOMPRESSION_YAY0:
     {
-        JUT_PANIC("Sorry, not applied SZP archive.\n");
+        JPANIC(612, "Sorry, not prepared for SZP archive.\n");
+        return 0;
     }
 
     default:
     {
-        JUT_PANIC("??? bad sequence\n");
-    }
+        JPANIC(617, ":::??? bad sequence\n");
+        }
     }
     return 0;
 }
