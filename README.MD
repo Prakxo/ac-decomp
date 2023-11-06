@@ -9,9 +9,9 @@ A decompilation of the original N64 version of the game is being worked on [here
 
 Use `--recursive` when cloning to have ppcdis in the repository. 
 
-## Build
+## Building
 
-### Building with Docker (recommended)
+### Docker (recommended)
 
 > ℹ️ When using Windows, we recommend using a shell such as MSYS2, Bash, or PowerShell instead of the Command Prompt.
 
@@ -25,9 +25,9 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 8. Run configure.py (`docker run -it --rm -v ${PWD}:/ac-decomp ac-decomp python3 configure.py`).
 9. Run ninja (`docker run -it --rm -v ${PWD}:/ac-decomp ac-decomp ninja`).
 
-### Building manually (not recommended)
+### Build manually (not recommended)
 
-> ℹ️ If you're using Windows to build manually, you will need Windows Subsystem for Linux.
+> ℹ️ You will need WSL to do this on Windows.
 
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*: `yaz0 -d foresta.rel.szs foresta.rel`.
