@@ -14,7 +14,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 > ℹ️ When using Windows, use a shell such as PowerShell or Bash instead of the Command Prompt.
 
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
-2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*.
+2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*: `yaz0 -d foresta.rel.szs foresta.rel`.
 3. Place **main.dol** and **foresta.rel** in *dump/*.
 4. Place the [CodeWarrior 1.3.2 and 1.2.5n compilers](https://files.decomp.dev/compilers_20230715.zip) in *tools/1.3.2/* and *tools/1.2.5n/*, respectively.
 5. Download [CodeWarrior 1.3.2r](https://mega.nz/file/WuBFTCLT#TmB5R4-1mEFkk4G1Vjn9_cHXRD9wOIH9CtOLaVSWEas) and extract it to *tools/1.3.2r/*.
@@ -29,7 +29,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 Wine replacement that's made to work with the compilers, but Wine is still usable.**
 
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
-2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*.
+2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*: `yaz0 -d foresta.rel.szs foresta.rel`.
 3. Place **main.dol** and **foresta.rel** in *dump/*.
 4. Place the [CodeWarrior 1.3.2 and 1.2.5n compilers](https://files.decomp.dev/compilers_20230715.zip) in *tools/1.3.2/* and *tools/1.2.5n/*, respectively.
 5. Download [CodeWarrior 1.3.2r](https://mega.nz/file/WuBFTCLT#TmB5R4-1mEFkk4G1Vjn9_cHXRD9wOIH9CtOLaVSWEas) and extract it to *tools/1.3.2r/*.
