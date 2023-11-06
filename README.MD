@@ -35,7 +35,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 4. Download the [CodeWarrior 1.3.2 and 1.2.5n compilers](https://files.decomp.dev/compilers_20230715.zip) and extract them to *tools/1.3.2/* and *tools/1.2.5n/*, respectively.
 5. Download the [CodeWarrior 1.3.2r compiler](https://mega.nz/file/WuBFTCLT#TmB5R4-1mEFkk4G1Vjn9_cHXRD9wOIH9CtOLaVSWEas) and extract it to *tools/1.3.2r/*.
 6. Install Python and pip.
-7. Install ninja (`pip install ninja`).
+7. Install [ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages#package-managers).
 8. Install Python modules from requirements.txt (`pip install -r requirements.txt`).
 9. Install [wibo](https://github.com/decompals/wibo)
     - Wibo is a lightweight Wine replacement that's tailor-made for use with decomp projects. You can use regular Wine if you wish, but for the purposes of this guide, we'll be using wibo.
