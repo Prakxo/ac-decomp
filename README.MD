@@ -21,9 +21,9 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 4. Download the [CodeWarrior 1.3.2 and 1.2.5n compilers](https://files.decomp.dev/compilers_20230715.zip) and extract them to *tools/1.3.2/* and *tools/1.2.5n/*, respectively.
 5. Download the [CodeWarrior 1.3.2r compiler](https://mega.nz/file/WuBFTCLT#TmB5R4-1mEFkk4G1Vjn9_cHXRD9wOIH9CtOLaVSWEas) and extract it to *tools/1.3.2r/*.
 6. Install Docker.
-7. Run `docker build -t ac-decomp .` to build the Docker image.
-8. Run `docker run -it --rm -v ${PWD}:/ac-decomp ac-decomp python3 configure.py` to run configure.py.
-9. Run `docker run -it --rm -v ${PWD}:/ac-decomp ac-decomp ninja` to run ninja.
+7. Build the Docker image (`docker build -t ac-decomp .`).
+8. Run configure.py (`docker run -it --rm -v ${PWD}:/ac-decomp ac-decomp python3 configure.py`).
+9. Run ninja (`docker run -it --rm -v ${PWD}:/ac-decomp ac-decomp ninja`).
 
 ### Building (manual)
 
@@ -46,7 +46,7 @@ Wine replacement that's made to work with the compilers, but Wine is still usabl
         - Set the environment variable `DEVKITPPC` to */opt/devkitpro/devkitPPC*.
             - If you're on Windows, you will need to also add *C:\devkitPro\devkitPPC\bin* to your `PATH`. On Windows, you will need to reboot after doing both of these things.
 8. Install Python and pip.
-9. Install ninja by running `pip install ninja`.
+9. Install ninja (`pip install ninja`).
 10. Install Python modules from requirements.txt (`pip install -r requirements.txt`).
 11. Run `python3 configure.py`.
 12. Run `ninja`.
