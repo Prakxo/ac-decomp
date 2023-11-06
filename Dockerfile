@@ -6,12 +6,13 @@ RUN apt-get update && \
         git \
         python3 \
         python3-pip \
-        wget
+        wget \
+        ninja-build
 
 # --- python package installation ---
 COPY ./requirements.txt /temp/requirements.txt
 COPY ./tools/ppcdis/requirements.txt /temp/tools/ppcdis/requirements.txt
-RUN pip install ninja watchdog python-Levenshtein cxxfilt
+RUN pip install watchdog python-Levenshtein cxxfilt
 RUN pip install -r /temp/requirements.txt
 RUN rm -rf /temp
 
