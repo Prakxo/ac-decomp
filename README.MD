@@ -11,9 +11,9 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 
 ## Build
 
-> ℹ️ When using Windows, we recommend using a shell such as MSYS2 or Bash instead of the Command Prompt.
-
 ### Building (Docker)
+
+> ℹ️ When using Windows, we recommend using a shell such as MSYS2 or Bash instead of the Command Prompt.
 
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*: `yaz0 -d foresta.rel.szs foresta.rel`.
@@ -27,6 +27,8 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 
 ### Building (manual)
 
+> ℹ️ We do not support using Windows itself as a development environment. If you're using Windows, please use Docker, or if you prefer to install manually, use Windows Subsystem for Linux.
+
 **It's preferable to use [wibo](https://github.com/decompals/wibo), a lightweight
 Wine replacement that's made to work with the compilers, but Wine is still usable.**
 
@@ -36,15 +38,12 @@ Wine replacement that's made to work with the compilers, but Wine is still usabl
 4. Download the [CodeWarrior 1.3.2 and 1.2.5n compilers](https://files.decomp.dev/compilers_20230715.zip) and extract them to *tools/1.3.2/* and *tools/1.2.5n/*, respectively.
 5. Download the [CodeWarrior 1.3.2r compiler](https://mega.nz/file/WuBFTCLT#TmB5R4-1mEFkk4G1Vjn9_cHXRD9wOIH9CtOLaVSWEas) and extract it to *tools/1.3.2r/*.
 6. Set the `N64_SDK` environment variable with the path of your libultra or equivalent headers. If you need headers, you can use the ones from [ultralib](https://github.com/decompals/ultralib).
-    - On Windows, you will need to reboot after setting this.
     - Headers should be located at `$N64_SDK/ultra/usr/include`.
     - You may need to modify `Gpopmtx`'s `param` member to be `unsigned int` in **gbi.h**.
 7. Install devkitPPC.
     - To get devkitPPC, you'll need [devkitPro Pacman](https://devkitpro.org/wiki/devkitPro_pacman#Installing_devkitPro_Pacman).
-        - On Linux/*nix, run `dkp-pacman -S devkitPPC` once dkp-pacman is installed to install devkitPPC.
-        - On Windows, select the "Gamecube Development" component during the devkitPro install process to install devkitPPC.
+        - Run `dkp-pacman -S devkitPPC` once dkp-pacman is installed to install devkitPPC.
         - Set the environment variable `DEVKITPPC` to */opt/devkitpro/devkitPPC*.
-            - If you're on Windows, you will need to also add *C:\devkitPro\devkitPPC\bin* to your `PATH`. On Windows, you will need to reboot after doing both of these things.
 8. Install Python and pip.
 9. Install ninja (`pip install ninja`).
 10. Install Python modules from requirements.txt (`pip install -r requirements.txt`).
