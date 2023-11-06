@@ -29,9 +29,6 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 
 > ℹ️ If you're using Windows, please use Docker, or if you prefer to build manually, use Windows Subsystem for Linux.
 
-**It's preferable to use [wibo](https://github.com/decompals/wibo), a lightweight
-Wine replacement that's made to work with the compilers, but Wine is still usable.**
-
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*: `yaz0 -d foresta.rel.szs foresta.rel`.
 3. Place **main.dol** and **foresta.rel** in *dump/*.
@@ -44,6 +41,9 @@ Wine replacement that's made to work with the compilers, but Wine is still usabl
     - To get devkitPPC, you'll need [devkitPro Pacman](https://devkitpro.org/wiki/devkitPro_pacman#Installing_devkitPro_Pacman).
         - Run `dkp-pacman -S devkitPPC` once dkp-pacman is installed to install devkitPPC.
         - Set the environment variable `DEVKITPPC` to */opt/devkitpro/devkitPPC*.
+8. Install [wibo](https://github.com/decompals/wibo)
+    - Wibo is a lightweight Wine replacement that's made for use with decomp projects. You can use regular Wine if you wish, but for the purposes of this guide, we'll be using wibo.
+    - To install, download [the latest GitHub release](https://github.com/decompals/wibo/releases/latest) and run `install ./wibo /usr/bin` to install it to your system.
 8. Install Python and pip.
 9. Install ninja (`pip install ninja`).
 10. Install Python modules from requirements.txt (`pip install -r requirements.txt`).
