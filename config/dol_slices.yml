@@ -1,3 +1,5 @@
+ctors.s:
+    .ctors: [0x800a97b4, 0x800a97c0] # remove trailing 0s from ctor area
 #dolphin/os/__start.c:
 #    .init: [0x80003100, 0x80003354]
 dolphin/__ppc_eabi_init.cpp:
@@ -124,7 +126,7 @@ JSystem/JKernel/JKRDisposer.cpp:
     .text: [0x80065aa0, 0x80065b8c]
     .data: [0x800de3a8, 0x800de3c0]
     .sdata: [0x80217ec0, 0x80217ec8]
-JSystem/JKernel/JKRThread.cpp: # JKRThread linkage disabled until we can resolve the order of RTTI strings in .data
+JSystem/JKernel/JKRThread.cpp:
     .text: [0x80065b8c, 0x80065ef0]
     .ctors: [0x800a978c, 0x800a9790]
     .data: [0x800de3c0, 0x800de3f8]
@@ -205,12 +207,12 @@ JSystem/JKernel/JKRDvdRipper.cpp:
     .bss: [0x802070b0, 0x802070c8]
     .sdata: [0x80218028, 0x80218030]
     .sbss: [0x80218778, 0x802187a8]
-#JSystem/JKernel/JKRDvdAramRipper.cpp:
-    #.text: [0x8006c8fc, 0x8006d608]
-    #.ctors: [0x800a97a8, 0x800a97ac]
-    #.bss: [0x802070c8, 0x802070e0]
-    #.sdata: [0x80218030, 0x80218038]
-    #.sbss: [0x802187a8, 0x802187e8]
+JSystem/JKernel/JKRDvdAramRipper.cpp:
+    .text: [0x8006c8fc, 0x8006d608]
+    .ctors: [0x800a97a8, 0x800a97ac]
+    .bss: [0x802070c8, 0x802070e0]
+    .sdata: [0x80218030, 0x80218038]
+    .sbss: [0x802187a8, 0x802187e8]
 JSystem/JKernel/JKRDecomp.cpp:
     .text: [0x8006d608, 0x8006dd58]
     .data: [0x800dec90, 0x800ded18]
