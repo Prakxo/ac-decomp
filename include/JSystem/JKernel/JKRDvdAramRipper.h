@@ -13,19 +13,20 @@ public:
     JKRADCommand();
     ~JKRADCommand();
 
+    // Fields might need more swapping
     JSULink<JKRADCommand> mLink;
-    u8 _10[0x18];                         // _10 - unknown/padding
     JKRDvdFile *mDvdFile;                 // _28
-    u32 _2C;                              // _2C
-    JKRAramBlock *mBlock;                 // _30
-    JKRExpandSwitch mExpandSwitch;        // _34
-    LoadCallback mCallBack;               // _38
-    u32 _3C;                              // _3C
-    u32 _40;                              // _40, probably size
-    u32 *_44;                             // _44
-    s32 _48;                              // _48
-    u8 _4C;                               // _4C
-    JKRAramStreamCommand *mStreamCommand; // _50
+    u32 _14;                              // _14
+    u32 _18;                              // _18, probably size
+    u32 _1C;                              // _1C
+    JKRAramBlock *mBlock;                 // _20
+    JKRExpandSwitch mExpandSwitch;        // _24
+    u8 _28[0x10];                         // _28 - unknown/padding
+    u32 *_3C;                             // _3C
+    s32 _40;                              // _40
+    LoadCallback mCallBack;               // _40
+    u8 _44;                               // _44
+    JKRAramStreamCommand *mStreamCommand; // _48
 };
 
 class JKRDvdAramRipper

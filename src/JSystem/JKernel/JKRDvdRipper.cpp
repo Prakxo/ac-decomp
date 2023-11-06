@@ -215,7 +215,7 @@ static u32 fileOffset;
 static u32 readCount;
 static u32 maxDest;
 
-static int JKRDecompressFromDVD(JKRDvdFile* _srcFile, void* buf, u32 size, u32 _maxDest, u32 _fileOffset, u32 _srcOffset) {
+int JKRDecompressFromDVD(JKRDvdFile* _srcFile, void* buf, u32 size, u32 _maxDest, u32 _fileOffset, u32 _srcOffset) {
   int res = 0;
 
   szpBuf = (u8*)JKRAllocFromSysHeap(SZP_BUFFERSIZE, -32);

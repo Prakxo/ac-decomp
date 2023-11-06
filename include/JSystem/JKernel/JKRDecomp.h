@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "dolphin/os/OSMessage.h"
+#include "JSystem/JKernel/JKRDvdFile.h"
 #include "JSystem/JKernel/JKRThread.h"
 #include "JSystem/JKernel/JKRAram.h"
 
@@ -98,8 +99,8 @@ inline void JKRDecompress(u8* src, u8* dst, u32 srcLength, u32 skipCount) {
   JKRDecomp::orderSync(src, dst, srcLength, skipCount);
 }
 
-//int JKRDecompressFromDVD(JKRDvdFile *, void *, u32, u32, u32, u32, u32 *);
-//int JKRDecompressFromDVDToAram(JKRDvdFile *, u32, u32, u32, u32, u32, u32 *);
+int JKRDecompressFromDVD(JKRDvdFile *srcFile, void *buf, u32 size, u32 maxDest, u32 fileOffset, u32 srcOffset);
+int JKRDecompressFromDVDToAram(JKRDvdFile *, u32, u32, u32, u32, u32);
 int JKRDecompressFromAramToMainRam(u32, void *, u32, u32, u32);
 
 #endif

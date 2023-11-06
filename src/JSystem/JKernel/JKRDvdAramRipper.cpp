@@ -1,12 +1,12 @@
-#include <string.h>
+#include <_mem.h>
+#include <dolphin/string.h>
 #include <dolphin/vi.h>
-#include "JSystem/JKernel/JKRAram.h"
-#include "JSystem/JKernel/JKRDvdAramRipper.h'
-#include "JSystem/JKernel/JKRDvdFile.h'
-#include "JSystem/JUtility/JUTAssertion.h"
-#include "JSystem/JSupport/JSUStream.h"
 
-// TODO
+#include "JSystem/JKernel/JKRDvdAramRipper.h"
+#include "JSystem/JKernel/JKRDvdFile.h"
+#include "JSystem/JKernel/JKRDvdRipper.h"
+#include "JSystem/JKernel/JKRDecomp.h"
+#include "JSystem/JUtility/JUTAssertion.h"
 
 JSUList<JKRADCommand> JKRDvdAramRipper::sDvdAramAsyncList;
 
@@ -26,15 +26,8 @@ JKRAramBlock *JKRDvdAramRipper::loadToAram(s32 entrynum, u32 p2, JKRExpandSwitch
 JKRAramBlock *JKRDvdAramRipper::loadToAram(JKRDvdFile *dvdFile, u32 p1,
                                            JKRExpandSwitch p2, u32 p3, u32 p4)
 {
-    JKRADCommand *command =
-        loadToAram_Async(dvdFile, p1, p2, nullptr, p3, p4, p5);
+    JKRADCommand *command = loadToAram_Async(dvdFile, p1, p2, nullptr, p3, p4);
     syncAram(command, 0);
-
-    if (command->_48 < 0)
-    {
-        delete command;
-        return nullptr;
-    }
 
     if (p1)
     {
@@ -53,12 +46,13 @@ JKRADCommand *JKRDvdAramRipper::loadToAram_Async(JKRDvdFile *dvdFile, u32 p1,
 {
     JKRADCommand *command = new (JKRGetSystemHeap(), -4) JKRADCommand();
     command->mDvdFile = dvdFile;
-    command->_2C = p1;
+    command->_1C = p1;
     command->mBlock = nullptr;
     command->mExpandSwitch = expSwitch;
     command->mCallBack = cb;
-    command->_3C = p4;
-    command->_40 = p5;
+    
+    command->_14 = p4;
+    command->_18 = p5;
 
     if (!callCommand_Async(command))
     {
@@ -71,31 +65,26 @@ JKRADCommand *JKRDvdAramRipper::loadToAram_Async(JKRDvdFile *dvdFile, u32 p1,
 
 JKRADCommand *JKRDvdAramRipper::callCommand_Async(JKRADCommand *command)
 {
-
     bool isCmdTrdNull = true;
     JKRDvdFile *dvdFile = command->mDvdFile;
     int compression = JKRCOMPRESSION_NONE;
     OSLockMutex(&dvdFile->mAramMutex);
 
     s32 uncompressedSize;
-    if (command->_44)
-    {
-        *command->_44 = 0;
-    }
 
-    if (dvdFile->mCommandThread)
+    if (dvdFile->mAramThread)
     {
         isCmdTrdNull = false;
     }
     else
     {
-        dvdFile->mCommandThread = OSGetCurrentThread();
+        dvdFile->mAramThread = OSGetCurrentThread();
         JSUFileInputStream *stream = new (JKRGetSystemHeap(), -4) JSUFileInputStream(dvdFile);
-        dvdFile->mFileStream = stream;
+        dvdFile->mInputStream = stream;
         u32 fileSize = dvdFile->getFileSize();
-        if (command->_40 && fileSize > command->_40)
+        if (command->_18 && fileSize > command->_18)
         {
-            fileSize = command->_40;
+            fileSize = command->_18;
         }
         fileSize = ALIGN_NEXT(fileSize, 0x20);
         if (command->mExpandSwitch == EXPAND_SWITCH_DECOMPRESS)
@@ -117,14 +106,14 @@ JKRADCommand *JKRDvdAramRipper::callCommand_Async(JKRADCommand *command)
 
                 VIWaitForRetrace();
             }
-            DCInvalidateRange(bufPtr, 0x20);
-            compression = JKRCheckCompressed_noASR(bufPtr);
+
+            compression = JKRCheckCompressed(bufPtr);
             u32 expSize = JKRDecompExpandSize(bufPtr);
             uncompressedSize = expSize;
 
-            if ((command->_40 != 0) && expSize > command->_40)
+            if ((command->_18 != 0) && expSize > command->_18)
             {
-                uncompressedSize = command->_40;
+                uncompressedSize = command->_18;
             }
         }
 
@@ -135,43 +124,43 @@ JKRADCommand *JKRDvdAramRipper::callCommand_Async(JKRADCommand *command)
 
         if (command->mExpandSwitch == EXPAND_SWITCH_DECOMPRESS)
         {
-            if (command->_2C == 0 && command->mBlock == nullptr)
+            if (command->_1C == 0 && command->mBlock == nullptr)
             {
                 command->mBlock =
-                    JKRAram::getAramHeap()->alloc(uncompressedSize, JKRAramHeap::AM_Head);
+                    JKRAram::getAramHeap()->alloc(uncompressedSize, JKRAramHeap::Head);
                 if (command->mBlock)
                 {
-                    command->_2C = command->mBlock->mAddress;
+                    command->_1C = command->mBlock->mAddress;
                 }
                 dvdFile->mAramBlock = command->mBlock;
             }
 
             if (command->mBlock)
             {
-                command->_2C = command->mBlock->mAddress;
+                command->_1C = command->mBlock->mAddress;
             }
 
-            if (command->_2C == 0)
+            if (command->_1C == 0)
             {
-                dvdFile->mCommandThread = nullptr;
+                dvdFile->mAramThread = nullptr;
                 return nullptr;
             }
         }
         else
         {
-            if (command->_2C == 0 && !command->mBlock)
+            if (command->_1C == 0 && !command->mBlock)
             {
-                command->mBlock = JKRAram::getAramHeap()->alloc(fileSize, JKRAramHeap::AM_Head);
+                command->mBlock = JKRAram::getAramHeap()->alloc(fileSize, JKRAramHeap::Head);
             }
 
             if (command->mBlock)
             {
-                command->_2C = command->mBlock->mAddress;
+                command->_1C = command->mBlock->mAddress;
             }
 
-            if (command->_2C == 0)
+            if (command->_1C == 0)
             {
-                dvdFile->mCommandThread = nullptr;
+                dvdFile->mAramThread = nullptr;
                 return nullptr;
             }
         }
@@ -179,21 +168,18 @@ JKRADCommand *JKRDvdAramRipper::callCommand_Async(JKRADCommand *command)
         if (compression == 0)
         {
             command->mStreamCommand = JKRAramStream::write_StreamToAram_Async(
-                stream, command->_2C, fileSize - command->_3C, command->_3C,
-                command->_44);
+                stream, command->_1C, fileSize - command->_14, command->_14);
         }
         else if (compression == JKRCOMPRESSION_YAY0)
         {
             command->mStreamCommand = JKRAramStream::write_StreamToAram_Async(
-                stream, command->_2C, fileSize - command->_3C, command->_3C,
-                command->_44);
+                stream, command->_1C, fileSize - command->_14, command->_14);
         }
         else if (compression == JKRCOMPRESSION_YAZ0)
         {
             command->mStreamCommand = nullptr;
-            JKRDecompressFromDVDToAram(command->mDvdFile, command->_2C, fileSize,
-                                       uncompressedSize, command->_3C, 0,
-                                       command->_44);
+            JKRDecompressFromDVDToAram(command->mDvdFile, command->_1C, fileSize,
+                                       uncompressedSize, command->_14, 0);
         }
 
         if (!command->mCallBack)
@@ -218,7 +204,6 @@ bool JKRDvdAramRipper::syncAram(JKRADCommand *command, int p1)
     if (command->mStreamCommand)
     {
         JKRAramStreamCommand *var1 = JKRAramStream::sync(command->mStreamCommand, p1);
-        command->_48 = var1 != nullptr ? 0 : -1;
 
         if (p1 != 0 && var1 == nullptr)
         {
@@ -233,21 +218,20 @@ bool JKRDvdAramRipper::syncAram(JKRADCommand *command, int p1)
         delete command->mStreamCommand;
     }
 
-    delete dvdFile->mFileStream;
-    dvdFile->mCommandThread = nullptr;
+    delete dvdFile->mInputStream;
+    dvdFile->mAramThread = nullptr;
     OSUnlockMutex(&dvdFile->mAramMutex);
     return true;
 }
 
 JKRADCommand::JKRADCommand() : mLink(this)
 {
-    _48 = 0;
-    _4C = 0;
+    _44 = 0;
 }
 
 JKRADCommand::~JKRADCommand()
 {
-    if (_4C == 1)
+    if (_44 == 1)
         delete mDvdFile;
 }
 
@@ -276,30 +260,21 @@ static u8 *firstSrcData();
 static u8 *nextSrcData(u8 *);
 static u32 dmaBufferFlush(u32);
 
-int JKRDecompressFromDVDToAram(JKRDvdFile *dvdFile, u32 p2, u32 fileSize, u32 decompressedSize, u32 p5, u32 p6, u32 *p7)
+int JKRDecompressFromDVDToAram(JKRDvdFile *dvdFile, u32 p2, u32 fileSize, u32 decompressedSize, u32 p5, u32 p6)
 {
-    BOOL interrupt = OSDisableInterrupts();
-    if (!isInitMutex)
-    {
-        OSInitMutex(&decompMutex);
-        isInitMutex = true;
-    }
-    OSRestoreInterrupts(interrupt);
-    OSLockMutex(&decompMutex);
-
-    u32 bufferSize = JKRDvdAramRipper::getSZSBufferSize();
-    szpBuf = (u8 *)JKRAllocFromSysHeap(bufferSize, 32);
+    int result = 0;
+    szpBuf = (u8 *)JKRAllocFromSysHeap(SZP_BUFFERSIZE, 32);
     JUT_ASSERT(szpBuf != 0);
-    szpEnd = szpBuf + bufferSize;
+    szpEnd = szpBuf + SZP_BUFFERSIZE;
 
-    refBuf = (u8 *)JKRAllocFromSysHeap(0x1120, 0);
+    refBuf = (u8 *)JKRAllocFromSysHeap(REF_BUFFERSIZE, 0);
     JUT_ASSERT(refBuf != 0);
-    refEnd = refBuf + 0x1120;
+    refEnd = refBuf + REF_BUFFERSIZE;
     refCurrent = refBuf;
 
-    dmaBuf = (u8 *)JKRAllocFromSysHeap(0x100, 32);
+    dmaBuf = (u8 *)JKRAllocFromSysHeap(DMA_BUFFERSIZE, 32);
     JUT_ASSERT(dmaBuf != 0);
-    dmaEnd = dmaBuf + 0x100;
+    dmaEnd = dmaBuf + DMA_BUFFERSIZE;
     dmaCurrent = dmaBuf;
 
     srcFile = dvdFile;
@@ -308,15 +283,15 @@ int JKRDecompressFromDVDToAram(JKRDvdFile *dvdFile, u32 p2, u32 fileSize, u32 de
     fileOffset = p5;
     readCount = 0;
     maxDest = decompressedSize;
-    p7 = p7 ? p7 : &tsArea;
-    tsPtr = p7;
-    *p7 = 0;
+
     u8 *first = firstSrcData();
-    int result = first ? decompSZS_subroutine(first, p2) : -1;
+    if(first)
+        result = decompSZS_subroutine(first, p2);
+
     JKRFree(szpBuf);
     JKRFree(refBuf);
     JKRFree(dmaBuf);
-    OSUnlockMutex(&decompMutex);
+
     return result;
 }
 
@@ -328,7 +303,6 @@ int decompSZS_subroutine(u8 *src, u32 dmaAddr)
     s32 currCodeByte = 0;
     s32 numBytes;
 
-    u32 ts = 0;
     u32 dmaStart = dmaAddr;
 
     if (src[0] != 'Y' || src[1] != 'a' || src[2] != 'z' || src[3] != '0')
@@ -357,7 +331,6 @@ int decompSZS_subroutine(u8 *src, u32 dmaAddr)
             {
                 dmaAddr++;
                 *dmaCurrent++ = *src;
-                ts++;
                 if (dmaCurrent == dmaEnd)
                     dmaStart += dmaBufferFlush(dmaStart);
 
@@ -393,7 +366,6 @@ int decompSZS_subroutine(u8 *src, u32 dmaAddr)
                 {
                     dmaAddr++;
                     *(dmaCurrent++) = *copySource;
-                    ts++;
                     if (dmaCurrent == dmaEnd)
                         dmaStart += dmaBufferFlush(dmaStart);
 
@@ -418,7 +390,6 @@ int decompSZS_subroutine(u8 *src, u32 dmaAddr)
     } while (dmaAddr < endPtr);
 
     dmaBufferFlush(dmaStart);
-    *tsPtr = ts;
 
     return 0;
 }
@@ -456,7 +427,7 @@ u8 *nextSrcData(u8 *src)
     u32 transSize = (u32)(szpEnd - (buf + limit));
     if (transSize > transLeft)
         transSize = transLeft;
-#line 1036
+
     JUT_ASSERT(transSize > 0);
     while (true)
     {

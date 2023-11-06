@@ -363,11 +363,11 @@ void JKRAram::aramSync(JKRAMCommand *, int)
 
 int JKRDecompressFromAramToMainRam(u32 src, void *dst, u32 srcLength, u32 dstLength, u32 offset)
 {
-    szpBuf = (u8 *)JKRAllocFromSysHeap(0x400, 32);
+    szpBuf = (u8 *)JKRAllocFromSysHeap(SZP_BUFFERSIZE, 32);
 
     // JUT_ASSERT(szpBuf != 0);
 
-    szpEnd = szpBuf + 0x400;
+    szpEnd = szpBuf + SZP_BUFFERSIZE;
     if (offset != 0)
     {
         refBuf = (u8 *)JKRAllocFromSysHeap(0x1120, 0);
