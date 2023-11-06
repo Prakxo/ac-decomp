@@ -2,3 +2,6 @@
 
 ninja_syntax
 prettytable
+watchdog
+python-Levenshtein
+cxxfilt
