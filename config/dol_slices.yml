@@ -190,6 +190,10 @@ JSystem/JKernel/JKRDvdArchive.cpp:
     .text: [0x8006a4fc, 0x8006add0]
     .data: [0x800de938, 0x800dea70]
     .sdata: [0x80217fc8, 0x80217fe8]
+JSystem/JKernel/JKRCompArchive.cpp:
+    .text: [0x8006add0, 0x8006b8a4]
+    .data: [0x800dea70, 0x800deba8]
+    .sdata: [0x80217fe8, 0x80218008]
 JSystem/JKernel/JKRDvdFile.cpp:
     .text: [0x8006b8a4, 0x8006be0c]
     .ctors: [0x800a97a0, 0x800a97a4]
