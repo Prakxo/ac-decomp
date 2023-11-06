@@ -100,7 +100,7 @@ inline void JKRDecompress(u8* src, u8* dst, u32 srcLength, u32 skipCount) {
 }
 
 int JKRDecompressFromDVD(JKRDvdFile *srcFile, void *buf, u32 size, u32 maxDest, u32 fileOffset, u32 srcOffset);
-int JKRDecompressFromDVDToAram(JKRDvdFile *, u32, u32, u32, u32, u32);
-int JKRDecompressFromAramToMainRam(u32, void *, u32, u32, u32);
+int JKRDecompressFromDVDToAram(JKRDvdFile *srcFile, u32 address, u32 fileSize, u32 maxDest, u32 fileOffset, u32 srcOffset);
+int JKRDecompressFromAramToMainRam(u32 srcAddress, void *dst, u32 fileSize, u32 maxDest, u32 fileOffset);
 
 #endif

@@ -260,7 +260,7 @@ static u8 *firstSrcData();
 static u8 *nextSrcData(u8 *);
 static u32 dmaBufferFlush(u32);
 
-int JKRDecompressFromDVDToAram(JKRDvdFile *dvdFile, u32 p2, u32 fileSize, u32 decompressedSize, u32 p5, u32 p6)
+int JKRDecompressFromDVDToAram(JKRDvdFile *dvdFile, u32 address, u32 fileSize, u32 _maxDest, u32 _fileOffset, u32 _srcOffset)
 {
     int result = 0;
     szpBuf = (u8 *)JKRAllocFromSysHeap(SZP_BUFFERSIZE, 32);
@@ -278,15 +278,15 @@ int JKRDecompressFromDVDToAram(JKRDvdFile *dvdFile, u32 p2, u32 fileSize, u32 de
     dmaCurrent = dmaBuf;
 
     srcFile = dvdFile;
-    srcOffset = p6;
-    transLeft = fileSize - p6;
-    fileOffset = p5;
+    srcOffset = _srcOffset;
+    transLeft = fileSize - _srcOffset;
+    fileOffset = _fileOffset;
     readCount = 0;
-    maxDest = decompressedSize;
+    maxDest = _maxDest;
 
     u8 *first = firstSrcData();
     if(first)
-        result = decompSZS_subroutine(first, p2);
+        result = decompSZS_subroutine(first, address);
 
     JKRFree(szpBuf);
     JKRFree(refBuf);
