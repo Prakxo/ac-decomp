@@ -33,22 +33,23 @@ Wine replacement that's made to work with the compilers, but Wine is still usabl
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*: `yaz0 -d foresta.rel.szs foresta.rel`.
 3. Place **main.dol** and **foresta.rel** in *dump/*.
-4. Place the [CodeWarrior 1.3.2 and 1.2.5n compilers](https://files.decomp.dev/compilers_20230715.zip) in *tools/1.3.2/* and *tools/1.2.5n/*, respectively.
-5. Download [CodeWarrior 1.3.2r](https://mega.nz/file/WuBFTCLT#TmB5R4-1mEFkk4G1Vjn9_cHXRD9wOIH9CtOLaVSWEas) and extract it to *tools/1.3.2r/*.
-6. Set the `N64_SDK` environment variables with the path of your libultra or equivalent headers.
-    - If you need headers, you can use [ultralib](https://github.com/decompals/ultralib).
+4. Download the [CodeWarrior 1.3.2 and 1.2.5n compilers](https://files.decomp.dev/compilers_20230715.zip) and extract them to *tools/1.3.2/* and *tools/1.2.5n/*, respectively.
+5. Download the [CodeWarrior 1.3.2r compiler](https://mega.nz/file/WuBFTCLT#TmB5R4-1mEFkk4G1Vjn9_cHXRD9wOIH9CtOLaVSWEas) and extract it to *tools/1.3.2r/*.
+6. Set the `N64_SDK` environment variable with the path of your libultra or equivalent headers. If you need headers, you can use the ones from [ultralib](https://github.com/decompals/ultralib).
+    - On Windows, you will need to reboot after setting this.
     - Headers should be located at `$N64_SDK/ultra/usr/include`.
     - You may need to modify `Gpopmtx`'s `param` member to be `unsigned int` in **gbi.h**.
-7. Install devkitPPC, Python, pip, and ninja.
+7. Install devkitPPC.
     - To get devkitPPC, you'll need [devkitPro Pacman](https://devkitpro.org/wiki/devkitPro_pacman#Installing_devkitPro_Pacman).
         - On Linux/*nix, run `dkp-pacman -S devkitPPC` once dkp-pacman is installed to install devkitPPC.
         - On Windows, select the "Gamecube Development" component during the devkitPro install process to install devkitPPC.
-        - Set the environment variable DEVKITPPC to `/opt/devkitpro/devkitPPC`.
-            - If you're on Windows, you will need to also add `C:\devkitPro\devkitPPC\bin` to your PATH. On Windows, you will need to reboot after doing both of these things.
-    - Once you have Python and pip, install ninja by running `pip install ninja`.
-8. Install Python modules from requirements.txt (`pip install -r requirements.txt`).
-9. Run `python3 configure.py`.
-10. Run `ninja`.
+        - Set the environment variable `DEVKITPPC` to */opt/devkitpro/devkitPPC*.
+            - If you're on Windows, you will need to also add *C:\devkitPro\devkitPPC\bin* to your `PATH`. On Windows, you will need to reboot after doing both of these things.
+8. Install Python and pip.
+9. Install ninja by running `pip install ninja`.
+10. Install Python modules from requirements.txt (`pip install -r requirements.txt`).
+11. Run `python3 configure.py`.
+12. Run `ninja`.
 
 ## Credits
 
