@@ -11,7 +11,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 
 ## Building
 
-### Docker (recommended)
+### Docker
 
 > ℹ️ When using Windows, we recommend using a shell such as MSYS2, Bash, or PowerShell instead of the Command Prompt.
 
@@ -25,7 +25,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 8. Run configure.py (`docker run -it --rm -v ${PWD}:/ac-decomp ac-decomp python3 configure.py`).
 9. Run ninja (`docker run -it --rm -v ${PWD}:/ac-decomp ac-decomp ninja`).
 
-### Build manually (not recommended)
+### Build manually
 
 > ℹ️ You will need WSL to do this on Windows.
 
