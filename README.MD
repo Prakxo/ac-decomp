@@ -42,8 +42,8 @@ Use `--recursive` when cloning to have ppcdis in the repository.
         - Run `dkp-pacman -S devkitPPC` once dkp-pacman is installed to install devkitPPC.
         - Set the environment variable `DEVKITPPC` to */opt/devkitpro/devkitPPC*.
 8. Install [wibo](https://github.com/decompals/wibo)
-    - Wibo is a lightweight Wine replacement that's made for use with decomp projects. You can use regular Wine if you wish, but for the purposes of this guide, we'll be using wibo.
-    - To install, download [the latest GitHub release](https://github.com/decompals/wibo/releases/latest) and run `install ./wibo /usr/bin` to install it to your system.
+    - Wibo is a lightweight Wine replacement that's tailor-made for use with decomp projects. You can use regular Wine if you wish, but for the purposes of this guide, we'll be using wibo.
+    - Download [the latest GitHub release](https://github.com/decompals/wibo/releases/latest) and run `install ./wibo /usr/bin` to install it to your system.
 8. Install Python and pip.
 9. Install ninja (`pip install ninja`).
 10. Install Python modules from requirements.txt (`pip install -r requirements.txt`).
