@@ -1,13 +1,12 @@
-#include "JSystem/JKernel/JKRThread.h"
 
-#include "JSystem/JSupport/JSUList.h"
-#include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/JKernel/JKRMacro.h"
+#include "JSystem/JKernel/JKRThread.h"
+#include "JSystem/JKernel/JKRHeap.h"
 
 JSUList<JKRThread> JKRThread::sThreadList;
 
 JKRThread::JKRThread(u32 stackSize, int msgCount, int threadPrio)
-    : JKRDisposer(), mLink(this) {
+    : mLink(this) {
   this->mHeap = JKRHeap::findFromRoot(this);
   if (this->mHeap == nullptr) {
     this->mHeap = JKRHeap::sSystemHeap;
@@ -28,7 +27,7 @@ JKRThread::JKRThread(u32 stackSize, int msgCount, int threadPrio)
 }
 
 JKRThread::JKRThread(OSThread *threadRecord, int msgCount)
-    : JKRDisposer(), mLink(this) {
+    : mLink(this) {
   this->mHeap = nullptr;
   this->mThreadRecord = threadRecord;
   this->mStackSize = (u32)threadRecord->stackEnd - (u32)threadRecord->stackBase;
@@ -58,4 +57,58 @@ JKRThread::~JKRThread() {
 
 void *JKRThread::start(void *thread) {
  return static_cast<JKRThread*>(thread)->run();
+}
+
+// UNUSED FUNCTIONS, REQUIRED FOR RTTI
+JKRTask::JKRTask() : JKRThread(0x4000, 4, 31)
+{
+
+}
+
+JKRTask::~JKRTask() {  }
+
+JKRTask *JKRTask::create()
+{
+  return new JKRTask();
+}
+
+void JKRTask::destroy() {
+  delete this;
+}
+
+void *JKRTask::run()
+{
+ Request *req;
+ //OSInitFastCast();
+ while (true)
+ {
+    req = (Request *)waitMessageBlock();
+    if (req->mCb)
+    {
+      req->mCb(req->mArg);
+      if (mTaskMsgQueue)
+      {
+        OSSendMessage(mTaskMsgQueue, req->mMsg, OS_MESSAGE_NOBLOCK);
+      }
+    }
+    req->mCb = nullptr;
+ }
+}
+
+bool JKRTask::request(RequestCallback callback, void *arg, void *msg)
+{
+ Request *req = searchBlank();
+ if (req == nullptr)
+ {
+    return false;
+ }
+ req->mCb = callback;
+ req->mArg = arg;
+ req->mMsg = msg;
+ bool sendResult = OSSendMessage(&mMesgQueue, req, OS_MESSAGE_NOBLOCK);
+ if (!sendResult)
+ {
+    req->mCb = nullptr;
+ }
+ return sendResult;
 }
