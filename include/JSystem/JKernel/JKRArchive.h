@@ -200,7 +200,7 @@ protected:
     SDIDirEntry *mDirectories;       // _48
     SDIFileEntry *mFileEntries;      // _4C
     const char *mStrTable;           // _50
-    int _58;                         // _54
+    int _54;                         // _54
     int mCompression;                // _58
     EMountDirection mMountDirection; // _5C
 };
@@ -223,9 +223,14 @@ public:
 
     bool open(s32);
     u32 getAramAddress_Entry(SDIFileEntry *fileEntry);
-    u32 getAramAddress(const char *file);
+    u32 getAramAddress(u32, const char *file);
     static u32 fetchResource_subroutine(u32, u32, u8 *, u32, int);
     static u32 fetchResource_subroutine(u32, u32, JKRHeap *, int, u8 **);
+
+    void fixedInit(s32 entryNum, EMountDirection direction);
+    bool mountFixed(s32 entryNum, EMountDirection direction);
+    bool mountFixed(const char *path, EMountDirection direction);
+    void unmountFixed();
 
     // _00     = VTBL
     // _00-_60 = JKRArchive

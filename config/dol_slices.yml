@@ -182,6 +182,10 @@ JSystem/JKernel/JKRMemArchive.cpp:
     .text: [0x80069530, 0x80069a28]
     .data: [0x800de740, 0x800de828]
     .sdata: [0x80217f78, 0x80217f98]
+JSystem/JKernel/JKRAramArchive.cpp:
+    .text: [0x80069a28, 0x8006a4fc]
+    .data: [0x800de828, 0x800de938]
+    .sdata: [0x80217f98, 0x80217fc8]
 JSystem/JKernel/JKRDvdFile.cpp:
     .text: [0x8006b8a4, 0x8006be0c]
     .ctors: [0x800a97a0, 0x800a97a4]

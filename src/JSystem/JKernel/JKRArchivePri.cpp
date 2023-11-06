@@ -19,7 +19,7 @@ JKRArchive::JKRArchive(s32 entryNum, JKRArchive::EMountMode mountMode)
     mIsMounted = false;
     mMountMode = mountMode;
     mMountCount = 1;
-    _58 = 1;
+    _54 = 1;
     mHeap = JKRHeap::findFromRoot(this);
     if (!mHeap)
     {
