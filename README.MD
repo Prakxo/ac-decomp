@@ -27,7 +27,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 
 ### Building manually (not recommended)
 
-> ℹ️ If you're using Windows, please use Docker, or if you prefer to build manually, use Windows Subsystem for Linux.
+> ℹ️ If you're using Windows, please use Docker, but if you prefer to build manually, use Windows Subsystem for Linux.
 
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*: `yaz0 -d foresta.rel.szs foresta.rel`.
@@ -37,18 +37,18 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 6. Set the `N64_SDK` environment variable with the path of your libultra or equivalent headers. If you need headers, you can use the ones from [ultralib](https://github.com/decompals/ultralib).
     - Headers should be located at `$N64_SDK/ultra/usr/include`.
     - You may need to modify `Gpopmtx`'s `param` member to be `unsigned int` in **gbi.h**.
-7. Install devkitPPC.
+7. Install Python and pip.
+8. Install ninja (`pip install ninja`).
+9. Install Python modules from requirements.txt (`pip install -r requirements.txt`).
+10. Install [wibo](https://github.com/decompals/wibo)
+    - Wibo is a lightweight Wine replacement that's tailor-made for use with decomp projects. You can use regular Wine if you wish, but for the purposes of this guide, we'll be using wibo.
+    - Download [the latest GitHub release](https://github.com/decompals/wibo/releases/latest) and run `install ./wibo /usr/bin` to install it to your system.
+11. Install devkitPPC.
     - To get devkitPPC, you'll need [devkitPro Pacman](https://devkitpro.org/wiki/devkitPro_pacman#Installing_devkitPro_Pacman).
         - Run `dkp-pacman -S devkitPPC` once dkp-pacman is installed to install devkitPPC.
         - Set the environment variable `DEVKITPPC` to */opt/devkitpro/devkitPPC*.
-8. Install [wibo](https://github.com/decompals/wibo)
-    - Wibo is a lightweight Wine replacement that's tailor-made for use with decomp projects. You can use regular Wine if you wish, but for the purposes of this guide, we'll be using wibo.
-    - Download [the latest GitHub release](https://github.com/decompals/wibo/releases/latest) and run `install ./wibo /usr/bin` to install it to your system.
-8. Install Python and pip.
-9. Install ninja (`pip install ninja`).
-10. Install Python modules from requirements.txt (`pip install -r requirements.txt`).
-11. Run `python3 configure.py`.
-12. Run `ninja`.
+12. Run `python3 configure.py`.
+13. Run `ninja`.
 
 ## Credits
 
