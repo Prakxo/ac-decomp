@@ -27,7 +27,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 
 ### Building (manual)
 
-> ℹ️ We do not support using Windows itself as a development environment. If you're using Windows, please use Docker, or if you prefer to install manually, use Windows Subsystem for Linux.
+> ℹ️ If you're using Windows, please use Docker, or if you prefer to install manually, use Windows Subsystem for Linux.
 
 **It's preferable to use [wibo](https://github.com/decompals/wibo), a lightweight
 Wine replacement that's made to work with the compilers, but Wine is still usable.**
