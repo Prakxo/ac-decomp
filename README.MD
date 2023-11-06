@@ -27,7 +27,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 
 ### Building manually (not recommended)
 
-> ℹ️ If you're using Windows, please use Docker, but if you prefer to build manually, use Windows Subsystem for Linux.
+> ℹ️ If you're using Windows to build manually, you will need Windows Subsystem for Linux.
 
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/*: `yaz0 -d foresta.rel.szs foresta.rel`.
