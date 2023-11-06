@@ -6,6 +6,8 @@
 #include "JSystem/JKernel/JKRHeap.h"
 #include "types.h"
 
+// NOTE: Vtable offsets are off
+
 #define JKRARCHIVE_ATTR_COMPRESSION 0x04
 #define JKRARCHIVE_ATTR_YAY0 0x80
 
@@ -124,25 +126,22 @@ public:
         u32 _1C;              // _1C
     };
 
-    JKRArchive(long, EMountMode);
+    JKRArchive(s32, EMountMode);
 
-    virtual bool becomeCurrent(const char *);                                                                 // _10
-    virtual void *getResource(const char *path);                                                              // _14
-    virtual void *getResource(u32 type, const char *name);                                                    // _18
-    virtual size_t readResource(void *resourceBuffer, u32 bufferSize, const char *path);                      // _1C
-    virtual size_t readResource(void *resourceBuffer, u32 bufferSize, u32 type, const char *name);            // _20
-    virtual void removeResourceAll();                                                                         // _24
-    virtual bool removeResource(void *);                                                                      // _28
-    virtual bool detachResource(void *);                                                                      // _2C
-    virtual long getResSize(const void *) const;                                                              // _30
-    virtual u32 countFile(const char *) const;                                                                // _34
-    virtual JKRFileFinder *getFirstFile(const char *) const;                                                  // _38
-    virtual u32 getExpandedResSize(const void *resource) const { return getResSize(resource); };              // _3C (weak)
-    virtual void *fetchResource(SDIFileEntry *entry, u32 *outSize) = 0;                                       // _40
-    virtual void *fetchResource(void *resourceBuffer, u32 bufferSize, SDIFileEntry *entry, u32 *resSize) = 0; // _44
-    virtual void setExpandSize(SDIFileEntry *, u32);                                                          // _48
-    virtual u32 getExpandSize(SDIFileEntry *) const;                                                          // _4C
-    virtual ~JKRArchive();                                                                                    // _08
+    virtual ~JKRArchive();                                                                                                                  // _08
+    virtual bool becomeCurrent(const char *);                                                                                               // _10
+    virtual void *getResource(const char *path);                                                                                            // _14
+    virtual void *getResource(u32 type, const char *name);                                                                                  // _18
+    virtual size_t readResource(void *resourceBuffer, u32 bufferSize, const char *path, JKRExpandSwitch expandSwitch);                      // _1C
+    virtual size_t readResource(void *resourceBuffer, u32 bufferSize, u32 type, const char *name);                                          // _20
+    virtual void removeResourceAll();                                                                                                       // _24
+    virtual bool removeResource(void *);                                                                                                    // _28
+    virtual bool detachResource(void *);                                                                                                    // _2C
+    virtual s32 getResSize(const void *) const;                                                                                             // _30
+    virtual u32 countFile(const char *) const;                                                                                              // _34
+    virtual JKRFileFinder *getFirstFile(const char *) const;                                                                                // _38
+    virtual void *fetchResource(SDIFileEntry *entry, u32 *outSize) = 0;                                                                     // _40
+    virtual void *fetchResource(void *resourceBuffer, u32 bufferSize, SDIFileEntry *entry, u32 *resSize, JKRExpandSwitch expandSwitch) = 0; // _44
 
     SDIDirEntry *findDirectory(const char *, u32) const;
     SDIFileEntry *findFsResource(const char *, u32) const;
@@ -159,14 +158,14 @@ public:
 
     static JKRArchive *mount(char const *, EMountMode, JKRHeap *, EMountDirection);
     static JKRArchive *mount(void *, JKRHeap *, EMountDirection);
-    static JKRArchive *mount(long, EMountMode, JKRHeap *, EMountDirection);
+    static JKRArchive *mount(s32, EMountMode, JKRHeap *, EMountDirection);
     static void *getGlbResource(u32 type, const char *name, JKRArchive *archive);
 
     // Unused/inlined:
     JKRArchive();
     JKRArchive(const char *p1, EMountMode mountMode);
-    static JKRArchive *check_mount_already(long);
-    static JKRArchive *check_mount_already(long, JKRHeap *);
+    static JKRArchive *check_mount_already(s32);
+    static JKRArchive *check_mount_already(s32, JKRHeap *);
     SDIDirEntry *findResType(u32) const;
     SDIFileEntry *findTypeResource(u32, u32) const;
 
@@ -194,15 +193,16 @@ public:
 protected:
     // _00     = VTBL
     // _00-_38 = JKRFileLoader
-    JKRHeap *mHeap;              // _38
-    u8 mMountMode;               // _3C
-    s32 mEntryNum;               // _40
-    SArcDataInfo *mArcInfoBlock; // _44
-    SDIDirEntry *mDirectories;   // _48
-    SDIFileEntry *mFileEntries;  // _4C
-    u32 *mExpandSizes;           // _50
-    const char *mStrTable;       // _54
-    int _58;                     // _58
+    JKRHeap *mHeap;                  // _38
+    u8 mMountMode;                   // _3C
+    s32 mEntryNum;                   // _40
+    SArcDataInfo *mArcInfoBlock;     // _44
+    SDIDirEntry *mDirectories;       // _48
+    SDIFileEntry *mFileEntries;      // _4C
+    const char *mStrTable;           // _50
+    int _58;                         // _54
+    int mCompression;                // _58
+    EMountDirection mMountDirection; // _5C
 };
 
 enum JKRMemBreakFlag
@@ -215,120 +215,108 @@ class JKRAramArchive : public JKRArchive
 {
 public:
     JKRAramArchive();
-    JKRAramArchive(long, EMountDirection);
+    JKRAramArchive(s32, EMountDirection);
 
-    virtual ~JKRAramArchive();                                       // _08
-    virtual size_t getExpandedResSize(const void *) const;           // _3C
-    virtual void *fetchResource(SDIFileEntry *, u32 *);              // _40
-    virtual void *fetchResource(void *, u32, SDIFileEntry *, u32 *); // _44
+    virtual ~JKRAramArchive();                                                                     // _08
+    virtual void *fetchResource(SDIFileEntry *, u32 *);                                            // _40
+    virtual void *fetchResource(void *, u32, SDIFileEntry *, u32 *, JKRExpandSwitch expandSwitch); // _44
 
-    bool open(long);
+    bool open(s32);
     u32 getAramAddress_Entry(SDIFileEntry *fileEntry);
     u32 getAramAddress(const char *file);
     static u32 fetchResource_subroutine(u32, u32, u8 *, u32, int);
     static u32 fetchResource_subroutine(u32, u32, JKRHeap *, int, u8 **);
 
     // _00     = VTBL
-    // _00-_5C = JKRArchive
-    int mCompression;                // _5C
-    EMountDirection mMountDirection; // _60
-    JKRAramBlock *mBlock;            // _64
-    JKRFile *mDvdFile;               // _68
+    // _00-_60 = JKRArchive
+    JKRAramBlock *mBlock; // _60
+    JKRFile *mDvdFile;    // _64
 };
 
 struct JKRCompArchive : public JKRArchive
 {
-    JKRCompArchive(long, EMountDirection);
+    JKRCompArchive(s32, EMountDirection);
 
-    virtual ~JKRCompArchive();                                                                            // _08
-    virtual void removeResourceAll();                                                                     // _24
-    virtual bool removeResource(void *);                                                                  // _28
-    virtual u32 getExpandedResSize(const void *) const;                                                   // _3C
-    virtual void *fetchResource(SDIFileEntry *entry, u32 *outSize);                                       // _40
-    virtual void *fetchResource(void *resourceBuffer, u32 bufferSize, SDIFileEntry *entry, u32 *resSize); // _44
+    virtual ~JKRCompArchive();                                                                                                          // _08
+    virtual void removeResourceAll();                                                                                                   // _24
+    virtual bool removeResource(void *);                                                                                                // _28
+    virtual void *fetchResource(SDIFileEntry *entry, u32 *outSize);                                                                     // _40
+    virtual void *fetchResource(void *resourceBuffer, u32 bufferSize, SDIFileEntry *entry, u32 *resSize, JKRExpandSwitch expandSwitch); // _44
 
-    bool open(long);
+    bool open(s32);
 
     // Unused/inlined:
-    void fixedInit(long);
-    void mountFixed(long);
+    void fixedInit(s32);
+    void mountFixed(s32);
     void mountFixed(const char *);
     void unmountFixed();
 
     // _00     = VTBL
     // _00-_5C = JKRArchive
-    int mCompression;                // _5C
-    EMountDirection mMountDirection; // _60
-    u32 _64;                         // _64
-    JKRAramBlock *mAramPart;         // _68
-    u32 _6C;                         // _6C
-    JKRFile *mDvdFile;               // _70
-    u32 mSizeOfMemPart;              // _74
-    u32 mSizeOfAramPart;             // _78
-    u32 _7C;                         // _7C
+    u32 _60;                         // _60
+    JKRAramBlock *mAramPart;         // _64
+    u32 _68;                         // _68
+    JKRFile *mDvdFile;               // _6C
+    u32 mSizeOfMemPart;              // _70
+    u32 mSizeOfAramPart;             // _74
+    u32 _78;                         // _78
 };
 
 struct JKRDvdArchive : public JKRArchive
 {
     JKRDvdArchive();
-    JKRDvdArchive(long, JKRArchive::EMountDirection);
+    JKRDvdArchive(s32, JKRArchive::EMountDirection);
 
-    virtual ~JKRDvdArchive();                                                                             // _00
-    virtual u32 getExpandedResSize(const void *) const;                                                   // _34
-    virtual void *fetchResource(SDIFileEntry *entry, u32 *outSize);                                       // _38
-    virtual void *fetchResource(void *resourceBuffer, u32 bufferSize, SDIFileEntry *entry, u32 *resSize); // _3C
+    virtual ~JKRDvdArchive();                                                                                                           // _00
+    virtual void *fetchResource(SDIFileEntry *entry, u32 *outSize);                                                                     // _38
+    virtual void *fetchResource(void *resourceBuffer, u32 bufferSize, SDIFileEntry *entry, u32 *resSize, JKRExpandSwitch expandSwitch); // _3C
 
-    bool open(long);
-    static u32 fetchResource_subroutine(long, u32, u32, u8 *, u32, int, int);
-    static u32 fetchResource_subroutine(long, u32, u32, JKRHeap *, int, int, u8 **);
+    bool open(s32);
+    static u32 fetchResource_subroutine(s32, u32, u32, u8 *, u32, int, int);
+    static u32 fetchResource_subroutine(s32, u32, u32, JKRHeap *, int, int, u8 **);
 
     // Unused/inlined:
-    unknown fixedInit(long, EMountDirection);
-    unknown mountFixed(long, EMountDirection);
+    unknown fixedInit(s32, EMountDirection);
+    unknown mountFixed(s32, EMountDirection);
     unknown mountFixed(const char *, EMountDirection);
     unknown unmountFixed();
 
     // _00     = VTBL
     // _00-_5C = JKRArchive
-    int mCompression;                // _5C
-    EMountDirection mMountDirection; // _60
-    int _64;                         // _64
-    JKRFile *mDvdFile;               // _68
+    int _60;                         // _60
+    JKRFile *mDvdFile;               // _64
 };
 
 struct JKRMemArchive : public JKRArchive
 {
     JKRMemArchive(); // unused/inlined
-    JKRMemArchive(long, EMountDirection);
+    JKRMemArchive(s32, EMountDirection);
     JKRMemArchive(void *, u32, JKRMemBreakFlag);
     JKRMemArchive(const char *, EMountDirection); // unused/inlined
 
-    virtual ~JKRMemArchive();                                                                             // _08
-    virtual void removeResourceAll();                                                                     // _24
-    virtual bool removeResource(void *);                                                                  // _28
-    virtual u32 getExpandedResSize(const void *) const;                                                   // _3C
-    virtual void *fetchResource(SDIFileEntry *entry, u32 *outSize);                                       // _40
-    virtual void *fetchResource(void *resourceBuffer, u32 bufferSize, SDIFileEntry *entry, u32 *resSize); // _44
+    virtual ~JKRMemArchive();                                                                                                           // _08
+    virtual void removeResourceAll();                                                                                                   // _24
+    virtual bool removeResource(void *);                                                                                                // _28
+    virtual void *fetchResource(SDIFileEntry *entry, u32 *outSize);                                                                     // _40
+    virtual void *fetchResource(void *resourceBuffer, u32 bufferSize, SDIFileEntry *entry, u32 *resSize, JKRExpandSwitch expandSwitch); // _44
 
-    bool open(long, EMountDirection);
+    bool open(s32, EMountDirection);
     bool open(void *, u32, JKRMemBreakFlag);
     static u32 fetchResource_subroutine(u8 *, u32, u8 *, u32, int);
 
     // Unused/inlined:
-    void fixedInit(long);
-    void mountFixed(long, EMountDirection);
+    void fixedInit(s32);
+    void mountFixed(s32, EMountDirection);
     void mountFixed(const char *, EMountDirection);
     void mountFixed(void *, JKRMemBreakFlag);
     void unmountFixed();
     void open(const char *, EMountDirection);
 
     // _00     = VTBL
-    // _00-_5C = JKRArchive
-    int mCompression;                // _5C
-    EMountDirection mMountDirection; // _60
-    SArcHeader *mArcHeader;          // _64
-    u8 *mArchiveData;                // _68
-    bool mIsOpen;                    // _6C
+    // _00-_60 = JKRArchive
+    SArcHeader *mArcHeader;          // _60
+    u8 *mArchiveData;                // _64
+    bool mIsOpen;                    // _68
 };
 
 inline int JKRConvertAttrToCompressionType(int attr)

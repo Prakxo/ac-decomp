@@ -61,7 +61,7 @@ public:
 
   static JSUList<JKRDvdFile> sDvdList;
 
-protected:
+public:
   OSMutex mMutex1;
   OSMutex mMutex2;
   JKRAramBlock* mAramBlock;

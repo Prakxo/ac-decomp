@@ -171,6 +171,17 @@ JSystem/JKernel/JKRFileFinder.cpp:
     .text: [0x800685b0, 0x80068744]
     .data: [0x800de670, 0x800de6b0]
     .sdata: [0x80217f50, 0x80217f60]
+JSystem/JKernel/JKRArchivePub.cpp:
+    .text: [0x80068744, 0x80068ed0]
+    .data: [0x800de6b0, 0x800de740]
+    .sdata: [0x80217f60, 0x80217f78]
+JSystem/JKernel/JKRArchivePri.cpp:
+    .text: [0x80068ed0, 0x80069530]
+    .sbss: [0x80218770, 0x80218778]
+JSystem/JKernel/JKRMemArchive.cpp:
+    .text: [0x80069530, 0x80069a28]
+    .data: [0x800de740, 0x800de828]
+    .sdata: [0x80217f78, 0x80217f98]
 JSystem/JKernel/JKRDvdFile.cpp:
     .text: [0x8006b8a4, 0x8006be0c]
     .ctors: [0x800a97a0, 0x800a97a4]
