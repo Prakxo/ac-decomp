@@ -11,9 +11,9 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 
 ## Building
 
-### Docker
+> ℹ️ When using Windows, it's recommended to use WSL.
 
-> ℹ️ When using Windows, it's recommended to use a shell such as MSYS2, Bash, or PowerShell instead of the Command Prompt.
+### Docker
 
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/* (`yaz0 -d foresta.rel.szs foresta.rel`).
@@ -27,7 +27,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 
 ### Build manually
 
-> ℹ️ You will need WSL to do this on Windows.
+> ℹ️ When building manually from a work directory originally used for Docker, you will need to run `sudo ninja -t clean` for the build to execute properly.
 
 1. Dump a copy of the game and extract **main.dol** and **foresta.rel.szs**.
 2. Decompress **foresta.rel.szs** with yaz0 found in *tools/* (`yaz0 -d foresta.rel.szs foresta.rel`).
