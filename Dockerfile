@@ -4,10 +4,10 @@ FROM ubuntu:22.04 as build
 RUN apt-get update && \
     apt-get install -y \
         git \
+        ninja-build \
         python3 \
         python3-pip \
-        wget \
-        ninja-build
+        wget
 
 # --- python package installation ---
 COPY ./requirements.txt /temp/requirements.txt
