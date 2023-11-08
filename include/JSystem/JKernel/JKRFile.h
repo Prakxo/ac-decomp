@@ -13,8 +13,8 @@ public:
   inline JKRFile()
     : JKRDisposer()
     , mFileOpen(false)
-    { 
-    }
+  {
+  }
 
   virtual ~JKRFile() { }
   virtual bool open(const char* path) = 0;

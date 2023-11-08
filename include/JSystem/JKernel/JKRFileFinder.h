@@ -9,7 +9,7 @@ class JKRArchive;
 
 struct JKRFileFinderBase
 {
-    char *mFileName;    // _00
+    char* mFileName;    // _00
     int mFileIndex;     // _04
     u16 mFileID;        // _08
     u16 mFileTypeFlags; // _0A
@@ -24,7 +24,7 @@ public:
     }
 
     JKRFileFinderBase mBase;
-    
+
     virtual ~JKRFileFinder() {}      // _08 (weak)
     virtual bool findNextFile() = 0; // _0C
 
@@ -34,7 +34,7 @@ public:
     }
 
     // _00     = VTBL
-    
+
     bool mIsAvailable; // _10
     bool mIsFileOrDir; // _11
 };
@@ -42,14 +42,14 @@ public:
 class JKRArcFinder : public JKRFileFinder
 {
 public:
-    JKRArcFinder(JKRArchive *, long, long);
+    JKRArcFinder(JKRArchive*, long, long);
 
     virtual ~JKRArcFinder() {}   // _08 (weak)
     virtual bool findNextFile(); // _0C
 
     // _00     = VTBL
     // _00-_14 = JKRFileFinder
-    JKRArchive *mArchive; // _14
+    JKRArchive* mArchive; // _14
     long mStartIndex;     // _18
     long mEndIndex;       // _1C
     long mNextIndex;      // _20
@@ -58,7 +58,7 @@ public:
 class JKRDvdFinder : public JKRFileFinder
 {
 public:
-    JKRDvdFinder(const char *);
+    JKRDvdFinder(const char*);
 
     virtual ~JKRDvdFinder() // _08 (weak)
     {

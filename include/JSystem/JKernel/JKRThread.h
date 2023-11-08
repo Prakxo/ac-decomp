@@ -15,44 +15,44 @@ struct JKRThread;
 struct JKRThreadName_
 {
   s32 id;
-  char *name;
+  char* name;
 };
 
-typedef void (*JKRThreadSwitch_PreCallback)(OSThread *current, OSThread *next);
-typedef void (*JKRThreadSwitch_PostCallback)(OSThread *current, OSThread *next);
+typedef void (*JKRThreadSwitch_PreCallback)(OSThread* current, OSThread* next);
+typedef void (*JKRThreadSwitch_PostCallback)(OSThread* current, OSThread* next);
 
 class JKRThreadSwitch
 {
 public:
-  JKRThreadSwitch(JKRHeap *);
-  virtual void draw(JKRThreadName_ *param_1, JUTConsole *param_2);
-  virtual void draw(JKRThreadName_ *param_1);
+  JKRThreadSwitch(JKRHeap*);
+  virtual void draw(JKRThreadName_* param_1, JUTConsole* param_2);
+  virtual void draw(JKRThreadName_* param_1);
   virtual ~JKRThreadSwitch();
 
-  static JKRThreadSwitch *createManager(JKRHeap *heap);
+  static JKRThreadSwitch* createManager(JKRHeap* heap);
 
-  JKRThread *enter(JKRThread *param_1, int param_2);
-  static void callback(OSThread *param_1, OSThread *param_2);
+  JKRThread* enter(JKRThread* param_1, int param_2);
+  static void callback(OSThread* param_1, OSThread* param_2);
 
   static u32 getTotalCount() { return sTotalCount; }
 
 private:
-  static JKRThreadSwitch *sManager;
+  static JKRThreadSwitch* sManager;
   static u32 sTotalCount;
   static u64 sTotalStart;
   static JKRThreadSwitch_PreCallback mUserPreCallback;
   static JKRThreadSwitch_PostCallback mUserPostCallback;
 
 private:
-  JKRHeap *mHeap;              // _04
+  JKRHeap* mHeap;              // _04
   bool mSetNextHeap;           // _08
   u8 _09[3];                   // _09, padding?
   u32 _0C;                     // _0C
   u32 _10;                     // _10
   u8 _14[4];                   // _14 - unknown/padding
   s64 _18;                     // _18
-  JUTConsole *mConsole;        // _20
-  JKRThreadName_ *mThreadName; // _24
+  JUTConsole* mConsole;        // _20
+  JKRThreadName_* mThreadName; // _24
 };
 
 class JKRThread : public JKRDisposer {
@@ -104,7 +104,7 @@ protected:
 // Unused class, function definitions from Sunshine and MKDD
 class JKRTask : public JKRThread
 {
-  typedef void (*RequestCallback)(void *);
+  typedef void (*RequestCallback)(void*);
 
   /**
    * @fabricated
@@ -113,27 +113,27 @@ class JKRTask : public JKRThread
   struct Request
   {
     RequestCallback mCb;
-    void *mArg;
-    void *mMsg;
+    void* mArg;
+    void* mMsg;
   };
 
   JKRTask(); // unused/inlined
 
   virtual ~JKRTask();  // _08
-  virtual void *run(); // _0C
+  virtual void* run(); // _0C
 
-  bool request(RequestCallback, void *, void *);
+  bool request(RequestCallback, void*, void*);
 
-  static JKRTask *create();
+  static JKRTask* create();
 
   // unused/inlined:
-  Request *searchBlank();
-  void requestJam(RequestCallback, void *, void *);
+  Request* searchBlank();
+  void requestJam(RequestCallback, void*, void*);
   void cancelAll();
-  void createTaskEndMessageQueue(int, JKRHeap *);
+  void createTaskEndMessageQueue(int, JKRHeap*);
   void destroyTaskEndMessageQueue();
-  void waitQueueMessageBlock(OSMessageQueue *, int *);
-  void waitQueueMessage(OSMessageQueue *, int *);
+  void waitQueueMessageBlock(OSMessageQueue*, int*);
+  void waitQueueMessage(OSMessageQueue*, int*);
 
   OSMessage waitMessageBlock()
   {
@@ -145,14 +145,14 @@ class JKRTask : public JKRThread
   void destroy();
 
   // Unused
-  static OSMessage *sEndMesgBuffer;
+  static OSMessage* sEndMesgBuffer;
   static u32 sEndMesgBufSize;
 
   // u32 _78;			 // _78
   //JSULink<JKRTask> mTaskLink;    // _7C, this didn't exist yet
-  Request *mRequest;             // _8C - ptr to request array
+  Request* mRequest;             // _8C - ptr to request array
   u32 mRequestCnt;               // _90 - amount of requests
-  OSMessageQueue *mTaskMsgQueue; // _94
+  OSMessageQueue* mTaskMsgQueue; // _94
 
   static JSUList<JKRTask> sTaskList;
   static u8 sEndMesgQueue[32]; // Unused
@@ -161,8 +161,8 @@ class JKRTask : public JKRThread
 /** @unused */
 struct JKRIdleThread : public JKRThread
 {
-  virtual ~JKRIdleThread(){}; // _08
-  virtual void *run()         // _0C
+  virtual ~JKRIdleThread() {}; // _08
+  virtual void* run()         // _0C
   {
     while (true)
     {
@@ -170,9 +170,9 @@ struct JKRIdleThread : public JKRThread
   };
   virtual void destroy() {} // 0x10
 
-  static void create(JKRHeap *, int, u32);
+  static void create(JKRHeap*, int, u32);
 
-  static JKRIdleThread *sThread;
+  static JKRIdleThread* sThread;
 };
 
 #endif

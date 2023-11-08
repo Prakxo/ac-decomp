@@ -26,7 +26,7 @@ JKRMemArchive::JKRMemArchive(s32 entryNum, EMountDirection mountDirection) : JKR
     }
 }
 
-JKRMemArchive::JKRMemArchive(void *mem, u32 size, JKRMemBreakFlag breakFlag) : JKRArchive((s32)mem, MOUNT_MEM)
+JKRMemArchive::JKRMemArchive(void* mem, u32 size, JKRMemBreakFlag breakFlag) : JKRArchive((s32)mem, MOUNT_MEM)
 {
     mIsMounted = false;
     if (!open(mem, size, breakFlag))
@@ -77,17 +77,17 @@ bool JKRMemArchive::open(s32 entryNum, JKRArchive::EMountDirection mountDirectio
     if (mMountDirection == JKRArchive::MOUNT_DIRECTION_HEAD)
     {
         u32 loadedSize;
-        mArcHeader = (SArcHeader *)JKRDvdRipper::loadToMainRAM(
+        mArcHeader = (SArcHeader*)JKRDvdRipper::loadToMainRAM(
             entryNum, nullptr, EXPAND_SWITCH_DECOMPRESS, 0, mHeap, JKRDvdRipper::ALLOC_DIR_TOP,
-            0, (int *)&mCompression);
+            0, (int*)&mCompression);
 
     }
     else
     {
         u32 loadedSize;
-        mArcHeader = (SArcHeader *)JKRDvdRipper::loadToMainRAM(
+        mArcHeader = (SArcHeader*)JKRDvdRipper::loadToMainRAM(
             entryNum, nullptr, EXPAND_SWITCH_DECOMPRESS, 0, mHeap,
-            JKRDvdRipper::ALLOC_DIR_BOTTOM, 0, (int *)&mCompression);
+            JKRDvdRipper::ALLOC_DIR_BOTTOM, 0, (int*)&mCompression);
     }
 
     if (!mArcHeader)
@@ -97,13 +97,13 @@ bool JKRMemArchive::open(s32 entryNum, JKRArchive::EMountDirection mountDirectio
     else
     {
         JUT_ASSERT(mArcHeader->signature == 'RARC');
-        mArcInfoBlock = (SArcDataInfo *)((u8 *)mArcHeader + mArcHeader->header_length);
-        mDirectories = (SDIDirEntry *)((u8 *)&mArcInfoBlock->num_nodes + mArcInfoBlock->node_offset);
-        mFileEntries = (SDIFileEntry *)((u8 *)&mArcInfoBlock->num_nodes + mArcInfoBlock->file_entry_offset);
-        mStrTable = (char *)((u8 *)&mArcInfoBlock->num_nodes + mArcInfoBlock->string_table_offset);
+        mArcInfoBlock = (SArcDataInfo*)((u8*)mArcHeader + mArcHeader->header_length);
+        mDirectories = (SDIDirEntry*)((u8*)&mArcInfoBlock->num_nodes + mArcInfoBlock->node_offset);
+        mFileEntries = (SDIFileEntry*)((u8*)&mArcInfoBlock->num_nodes + mArcInfoBlock->file_entry_offset);
+        mStrTable = (char*)((u8*)&mArcInfoBlock->num_nodes + mArcInfoBlock->string_table_offset);
 
         mArchiveData =
-            (u8 *)((u32)mArcHeader + mArcHeader->header_length + mArcHeader->file_data_offset);
+            (u8*)((u32)mArcHeader + mArcHeader->header_length + mArcHeader->file_data_offset);
         mIsOpen = true;
     }
 #if DEBUG
@@ -116,27 +116,27 @@ bool JKRMemArchive::open(s32 entryNum, JKRArchive::EMountDirection mountDirectio
     return (mMountMode == UNKNOWN_MOUNT_MODE) ? false : true;
 }
 
-bool JKRMemArchive::open(void *buffer, u32 bufferSize, JKRMemBreakFlag flag)
+bool JKRMemArchive::open(void* buffer, u32 bufferSize, JKRMemBreakFlag flag)
 {
-    mArcHeader = (SArcHeader *)buffer;
+    mArcHeader = (SArcHeader*)buffer;
     JUT_ASSERT(mArcHeader->signature == 'RARC');
-    mArcInfoBlock = (SArcDataInfo *)((u8 *)mArcHeader + mArcHeader->header_length);
-    mDirectories = (SDIDirEntry *)((u8 *)&mArcInfoBlock->num_nodes + mArcInfoBlock->node_offset);
-    mFileEntries = (SDIFileEntry *)((u8 *)&mArcInfoBlock->num_nodes + mArcInfoBlock->file_entry_offset);
-    mStrTable = (char *)((u8 *)&mArcInfoBlock->num_nodes + mArcInfoBlock->string_table_offset);
-    mArchiveData = (u8 *)(((u32)mArcHeader + mArcHeader->header_length) + mArcHeader->file_data_offset);
+    mArcInfoBlock = (SArcDataInfo*)((u8*)mArcHeader + mArcHeader->header_length);
+    mDirectories = (SDIDirEntry*)((u8*)&mArcInfoBlock->num_nodes + mArcInfoBlock->node_offset);
+    mFileEntries = (SDIFileEntry*)((u8*)&mArcInfoBlock->num_nodes + mArcInfoBlock->file_entry_offset);
+    mStrTable = (char*)((u8*)&mArcInfoBlock->num_nodes + mArcInfoBlock->string_table_offset);
+    mArchiveData = (u8*)(((u32)mArcHeader + mArcHeader->header_length) + mArcHeader->file_data_offset);
     mIsOpen = (flag == MBF_1) ? true : false; // mIsOpen might be u8
     mHeap = JKRHeap::findFromRoot(buffer);
     mCompression = JKRCOMPRESSION_NONE;
     return true;
 }
 
-void *JKRMemArchive::fetchResource(SDIFileEntry *fileEntry, u32 *resourceSize)
+void* JKRMemArchive::fetchResource(SDIFileEntry* fileEntry, u32* resourceSize)
 {
     JUT_ASSERT(isMounted())
 
-    if (!fileEntry->mData)
-        fileEntry->mData = mArchiveData + fileEntry->mDataOffset;
+        if (!fileEntry->mData)
+            fileEntry->mData = mArchiveData + fileEntry->mDataOffset;
 
     if (resourceSize)
         *resourceSize = fileEntry->mSize;
@@ -144,12 +144,12 @@ void *JKRMemArchive::fetchResource(SDIFileEntry *fileEntry, u32 *resourceSize)
     return fileEntry->mData;
 }
 
-void *JKRMemArchive::fetchResource(void *buffer, u32 bufferSize, SDIFileEntry *fileEntry,
-                                   u32 *resourceSize, JKRExpandSwitch expandSwitch)
+void* JKRMemArchive::fetchResource(void* buffer, u32 bufferSize, SDIFileEntry* fileEntry,
+    u32* resourceSize, JKRExpandSwitch expandSwitch)
 {
     JUT_ASSERT(isMounted())
 
-    bufferSize = (bufferSize & -32);
+        bufferSize = (bufferSize & -32);
     u32 srcLength = ALIGN_NEXT(fileEntry->mSize, 32);
     if (srcLength > bufferSize)
     {
@@ -163,12 +163,12 @@ void *JKRMemArchive::fetchResource(void *buffer, u32 bufferSize, SDIFileEntry *f
     else
     {
         int compression = JKRConvertAttrToCompressionType(fileEntry->getAttr());
-        if(expandSwitch != EXPAND_SWITCH_DECOMPRESS)
+        if (expandSwitch != EXPAND_SWITCH_DECOMPRESS)
             compression = JKRCOMPRESSION_NONE;
-            
-        void *data = mArchiveData + fileEntry->mDataOffset;
+
+        void* data = mArchiveData + fileEntry->mDataOffset;
         srcLength =
-            fetchResource_subroutine((u8 *)data, srcLength, (u8 *)buffer, bufferSize, compression);
+            fetchResource_subroutine((u8*)data, srcLength, (u8*)buffer, bufferSize, compression);
     }
 
     if (resourceSize)
@@ -190,7 +190,7 @@ void JKRMemArchive::removeResourceAll(void)
 
     // !@bug: looping over file entries without incrementing the fileEntry pointer. Thus, only the
     // first fileEntry will clear/remove the resource data.
-    SDIFileEntry *fileEntry = mFileEntries;
+    SDIFileEntry* fileEntry = mFileEntries;
     for (int i = 0; i < mArcInfoBlock->num_file_entries; i++)
     {
         if (fileEntry->mData)
@@ -200,11 +200,11 @@ void JKRMemArchive::removeResourceAll(void)
     }
 }
 
-bool JKRMemArchive::removeResource(void *resource)
+bool JKRMemArchive::removeResource(void* resource)
 {
     JUT_ASSERT(isMounted());
 
-    SDIFileEntry *fileEntry = findPtrResource(resource);
+    SDIFileEntry* fileEntry = findPtrResource(resource);
     if (!fileEntry)
         return false;
 
@@ -212,7 +212,7 @@ bool JKRMemArchive::removeResource(void *resource)
     return true;
 }
 
-u32 JKRMemArchive::fetchResource_subroutine(u8 *src, u32 srcLength, u8 *dst, u32 dstLength, int compression)
+u32 JKRMemArchive::fetchResource_subroutine(u8* src, u32 srcLength, u8* dst, u32 dstLength, int compression)
 {
     u32 alignedDst = dstLength & -32;
     u32 alignedSrc = ALIGN_NEXT(srcLength, 32);

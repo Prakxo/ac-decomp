@@ -68,7 +68,8 @@ bool JKRDvdFile::close() {
     if (DVDClose(&this->mDvdFileInfo)) {
       this->mFileOpen = false;
       return sDvdList.remove(&this->mLink);
-    } else {
+    }
+    else {
       OSErrorLine(212, "cannot close DVD file\n"); /* JKRDvdFile.cpp line 212 */
     }
   }
@@ -81,11 +82,12 @@ int JKRDvdFile::readData(void* data, s32 length, s32 ofs) {
   if (this->mDvdThread != nullptr) {
     OSUnlockMutex(&this->mDvdMutex);
     return -1;
-  } else {
+  }
+  else {
     this->mDvdThread = OSGetCurrentThread();
     retAddr = -1;
     if (DVDReadAsync(&this->mDvdFileInfo, data, length, ofs,
-                     JKRDvdFile::doneProcess)) {
+      JKRDvdFile::doneProcess)) {
       retAddr = this->sync();
     }
 
@@ -110,5 +112,5 @@ s32 JKRDvdFile::sync() {
 
 void JKRDvdFile::doneProcess(s32 result, DVDFileInfo* info) {
   OSSendMessage(&static_cast<JKRDvdFileInfo*>(info)->mFile->mDvdMessageQueue,
-                (OSMessage)result, OS_MESSAGE_NOBLOCK);
+    (OSMessage)result, OS_MESSAGE_NOBLOCK);
 }

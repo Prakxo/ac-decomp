@@ -43,12 +43,12 @@ public:
   static bool errorRetry;
 };
 
-inline void *JKRDvdToMainRam(long entryNum, u8 *dst, JKRExpandSwitch expandSwitch, u32 fileSize, JKRHeap *heap, JKRDvdRipper::EAllocDirection allocDirection, u32 startOffset, int *pCompression)
+inline void* JKRDvdToMainRam(long entryNum, u8* dst, JKRExpandSwitch expandSwitch, u32 fileSize, JKRHeap* heap, JKRDvdRipper::EAllocDirection allocDirection, u32 startOffset, int* pCompression)
 {
   return JKRDvdRipper::loadToMainRAM(entryNum, dst, expandSwitch, fileSize, heap, allocDirection, startOffset, pCompression);
 }
 
-inline void *JKRDvdToMainRam(const char *path, u8 *dst, JKRExpandSwitch expandSwitch, u32 fileSize, JKRHeap *heap, JKRDvdRipper::EAllocDirection allocDirection, u32 startOffset, int *pCompression)
+inline void* JKRDvdToMainRam(const char* path, u8* dst, JKRExpandSwitch expandSwitch, u32 fileSize, JKRHeap* heap, JKRDvdRipper::EAllocDirection allocDirection, u32 startOffset, int* pCompression)
 {
   return JKRDvdRipper::loadToMainRAM(path, dst, expandSwitch, fileSize, heap, allocDirection, startOffset, pCompression);
 }

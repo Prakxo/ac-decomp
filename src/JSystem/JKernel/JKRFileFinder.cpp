@@ -2,7 +2,7 @@
 #include "JSystem/JKernel/JKRFileFinder.h"
 #include "JSystem/JKernel/JKRArchive.h"
 
-JKRArcFinder::JKRArcFinder(JKRArchive *archive, long startindex, long entries) : JKRFileFinder()
+JKRArcFinder::JKRArcFinder(JKRArchive* archive, long startindex, long entries) : JKRFileFinder()
 {
     mArchive = archive;
 
@@ -35,9 +35,9 @@ bool JKRArcFinder::findNextFile()
 }
 
 // UNUSED
-JKRDvdFinder::JKRDvdFinder(const char *path) : JKRFileFinder()
+JKRDvdFinder::JKRDvdFinder(const char* path) : JKRFileFinder()
 {
-    mIsDvdOpen = DVDOpenDir(const_cast<char *>(path), &mDir);
+    mIsDvdOpen = DVDOpenDir(const_cast<char*>(path), &mDir);
     mIsAvailable = mIsDvdOpen;
     findNextFile();
 }

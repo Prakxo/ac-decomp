@@ -31,8 +31,8 @@ public:
 
   virtual ~JKRAramBlock();
 
-  JKRAramBlock *allocHead(u32 size, u8 groupID, JKRAramHeap *heap);
-  JKRAramBlock *allocTail(u32 size, u8 groupID, JKRAramHeap *heap);
+  JKRAramBlock* allocHead(u32 size, u8 groupID, JKRAramHeap* heap);
+  JKRAramBlock* allocTail(u32 size, u8 groupID, JKRAramHeap* heap);
 
   u32 getAddress() const { return this->mAddress; }
   u32 getSize() const { return this->mSize; }
@@ -63,17 +63,17 @@ public:
 
   virtual ~JKRAramHeap();
 
-  JKRAramBlock *alloc(u32 size, EAllocMode mode);
-  void free(JKRAramBlock *block);
-  JKRAramBlock *allocFromHead(u32 size);
-  JKRAramBlock *allocFromTail(u32 size);
+  JKRAramBlock* alloc(u32 size, EAllocMode mode);
+  void free(JKRAramBlock* block);
+  JKRAramBlock* allocFromHead(u32 size);
+  JKRAramBlock* allocFromTail(u32 size);
   u32 getFreeSize();
   u32 getTotalFreeSize();
   u32 getUsedSize(u8 groupID);
   void dump();
 
   u8 getCurrentGroupID() const { return this->mGroupID; }
-  JKRHeap *getMgrHeap() const { return this->mHeap; }
+  JKRHeap* getMgrHeap() const { return this->mHeap; }
 
   void lock() { OSLockMutex(&this->mMutex); }
   void unlock() { OSUnlockMutex(&this->mMutex); }
@@ -81,7 +81,7 @@ public:
   static JSUList<JKRAramBlock> sAramList;
 
   OSMutex mMutex;
-  JKRHeap *mHeap;
+  JKRHeap* mHeap;
   u32 mHeadAddress;
   u32 mTailAddress;
   u32 mSize;
@@ -96,18 +96,18 @@ public:
   JKRAram(u32, u32, long);
 
   virtual ~JKRAram();  // _08
-  virtual void *run(); // _0C
+  virtual void* run(); // _0C
 
-  static bool checkOkAddress(u8 *addr, u32 size, JKRAramBlock *block, u32 param_4);
-  static void changeGroupIdIfNeed(u8 *data, int groupId);
+  static bool checkOkAddress(u8* addr, u32 size, JKRAramBlock* block, u32 param_4);
+  static void changeGroupIdIfNeed(u8* data, int groupId);
 
-  static JKRAram *create(u32, u32, long, long, long);
-  static JKRAramBlock *mainRamToAram(u8 *, u32, u32, JKRExpandSwitch, u32, JKRHeap *, int);
-  static JKRAramBlock *mainRamToAram(u8 *, JKRAramBlock *block, u32, JKRExpandSwitch, u32, JKRHeap *, int);
-  static u8 *aramToMainRam(u32, u8 *, u32, JKRExpandSwitch, u32, JKRHeap *, int, u32 *);
-  static u8 *aramToMainRam(JKRAramBlock *, u8 *, u32, u32, JKRExpandSwitch, u32, JKRHeap *, int, u32 *);
+  static JKRAram* create(u32, u32, long, long, long);
+  static JKRAramBlock* mainRamToAram(u8*, u32, u32, JKRExpandSwitch, u32, JKRHeap*, int);
+  static JKRAramBlock* mainRamToAram(u8*, JKRAramBlock* block, u32, JKRExpandSwitch, u32, JKRHeap*, int);
+  static u8* aramToMainRam(u32, u8*, u32, JKRExpandSwitch, u32, JKRHeap*, int, u32*);
+  static u8* aramToMainRam(JKRAramBlock*, u8*, u32, u32, JKRExpandSwitch, u32, JKRHeap*, int, u32*);
 
-  void aramSync(JKRAMCommand *, int);
+  void aramSync(JKRAMCommand*, int);
 
   u32 getAudioMemory() const
   {
@@ -124,12 +124,12 @@ public:
     return sSZSBufferSize;
   }
 
-  static JKRAramHeap *getAramHeap()
+  static JKRAramHeap* getAramHeap()
   {
     return sAramObject->mAramHeap;
   }
 
-  static JKRAram *getManager()
+  static JKRAram* getManager()
   {
     return sAramObject;
   }
@@ -144,7 +144,7 @@ public:
 
   static u32 sSZSBufferSize;
 
-  static JKRAram *sAramObject;
+  static JKRAram* sAramObject;
   static OSMessage sMessageBuffer[4];
   static OSMessageQueue sMessageQueue;
   static JSUList<JKRAMCommand> sAramCommandList;
@@ -155,7 +155,7 @@ public:
   u32 mGraphMemorySize;   // _88
   u32 mUserMemoryPtr;     // _8C
   u32 mUserMemorySize;    // _90
-  JKRAramHeap *mAramHeap; // _94
+  JKRAramHeap* mAramHeap; // _94
   u32 mStackArray[3];     // _98
 };
 
@@ -173,41 +173,41 @@ public:
   u32 mLength;
   u32 mSource;
   u32 mDestination;
-  JKRAramBlock *mAramBlock;
+  JKRAramBlock* mAramBlock;
   u8 _54[4];
   AMCommandCallback mCallback;
-  OSMessageQueue *mCompletedMesgQueue;
+  OSMessageQueue* mCompletedMesgQueue;
   s32 mCallbackType;
-  JKRDecompCommand *mDecompCommand;
+  JKRDecompCommand* mDecompCommand;
   OSMessageQueue mMesgQueue;
   OSMessage mMesgBuffer[1];
-  void *_8C;
-  void *_90;
-  void *_94;
+  void* _8C;
+  void* _90;
+  void* _94;
 };
 
 class JKRAramCommand
 {
 public:
-  inline void setting(BOOL active, void *arg)
+  inline void setting(BOOL active, void* arg)
   {
     this->mActive = active;
     this->mArg = arg;
   }
 
   BOOL mActive;
-  void *mArg;
+  void* mArg;
 };
 
 class JKRAramPiece
 {
 public:
-  static JKRAMCommand *prepareCommand(int direction, u32 source, u32 destination, u32 length, JKRAramBlock *aramBlock, JKRAMCommand::AMCommandCallback callback);
-  static void sendCommand(JKRAMCommand *cmd);
-  static JKRAMCommand *orderAsync(int direction, u32 source, u32 destination, u32 length, JKRAramBlock *aramBlock, JKRAMCommand::AMCommandCallback callback);
-  static bool sync(JKRAMCommand *cmd, BOOL noBlock);
-  static bool orderSync(int direction, u32 source, u32 destination, u32 length, JKRAramBlock *aramBlock);
-  static void startDMA(JKRAMCommand *cmd);
+  static JKRAMCommand* prepareCommand(int direction, u32 source, u32 destination, u32 length, JKRAramBlock* aramBlock, JKRAMCommand::AMCommandCallback callback);
+  static void sendCommand(JKRAMCommand* cmd);
+  static JKRAMCommand* orderAsync(int direction, u32 source, u32 destination, u32 length, JKRAramBlock* aramBlock, JKRAMCommand::AMCommandCallback callback);
+  static bool sync(JKRAMCommand* cmd, BOOL noBlock);
+  static bool orderSync(int direction, u32 source, u32 destination, u32 length, JKRAramBlock* aramBlock);
+  static void startDMA(JKRAMCommand* cmd);
   static void doneDMA(u32 arg);
 
   static OSMutex mMutex;
@@ -234,15 +234,15 @@ public:
   u32 mAddress;                  // _04
   u32 mSize;                     // _08
   u32 _0C;                       // _0C
-  JSUFileInputStream *mStream;   // _10
+  JSUFileInputStream* mStream;   // _10
   u32 mOffset;                   // _14
-  u8 *mTransferBuffer;           // _18
+  u8* mTransferBuffer;           // _18
   u32 mTransferBufferSize;       // _1C
-  JKRHeap *mHeap;                // _20
+  JKRHeap* mHeap;                // _20
   bool mAllocatedTransferBuffer; // _24
   u32 _28;                       // _28
   OSMessageQueue mMessageQueue;  // _2C
-  void *mMessage;                // _4C
+  void* mMessage;                // _4C
   u32 _50;                       // _50
   u32 _54;                       // _54
 };
@@ -253,60 +253,60 @@ public:
   JKRAramStream(long);
 
   virtual ~JKRAramStream(); // _08
-  virtual void *run();      // _0C
+  virtual void* run();      // _0C
 
-  static JKRAramStream *create(s32);
+  static JKRAramStream* create(s32);
 
   static u32 readFromAram();
-  static s32 writeToAram(JKRAramStreamCommand *);
-  static JKRAramStreamCommand *write_StreamToAram_Async(JSUFileInputStream *, JKRAramBlock *, u32, u32);
-  static JKRAramStreamCommand *write_StreamToAram_Async(JSUFileInputStream *, u32, u32, u32);
-  static JKRAramStreamCommand *sync(JKRAramStreamCommand *, BOOL);
-  static void setTransBuffer(u8 *, u32, JKRHeap *);
+  static s32 writeToAram(JKRAramStreamCommand*);
+  static JKRAramStreamCommand* write_StreamToAram_Async(JSUFileInputStream*, JKRAramBlock*, u32, u32);
+  static JKRAramStreamCommand* write_StreamToAram_Async(JSUFileInputStream*, u32, u32, u32);
+  static JKRAramStreamCommand* sync(JKRAramStreamCommand*, BOOL);
+  static void setTransBuffer(u8*, u32, JKRHeap*);
 
-  static JKRAramStream *sAramStreamObject;
+  static JKRAramStream* sAramStreamObject;
   static OSMessage sMessageBuffer[4];
   static OSMessageQueue sMessageQueue;
 
-  static u8 *transBuffer;
-  static JKRHeap *transHeap;
+  static u8* transBuffer;
+  static JKRHeap* transHeap;
   static u32 transSize;
 
   // _00     = VTBL
   // _00-_7C = JKRThread
 };
 
-inline JKRAramBlock *JKRAllocFromAram(u32 size, JKRAramHeap::EAllocMode allocMode)
+inline JKRAramBlock* JKRAllocFromAram(u32 size, JKRAramHeap::EAllocMode allocMode)
 {
   return JKRAram::getAramHeap()->alloc(size, allocMode);
 }
 
-inline void JKRFreeToAram(JKRAramBlock *block)
+inline void JKRFreeToAram(JKRAramBlock* block)
 {
   JKRAram::getAramHeap()->free(block);
 }
 
-inline u8 *JKRAramToMainRam(u32 address, u8 *buf, u32 bufSize, JKRExpandSwitch expandSwitch, u32 p5, JKRHeap *heap, int id, u32 *pSize)
+inline u8* JKRAramToMainRam(u32 address, u8* buf, u32 bufSize, JKRExpandSwitch expandSwitch, u32 p5, JKRHeap* heap, int id, u32* pSize)
 {
   JKRAram::aramToMainRam(address, buf, bufSize, expandSwitch, p5, heap, id, pSize);
 }
 
-inline JKRAramBlock *JKRMainRamToAram(u8 *buf, u32 bufSize, u32 alignedSize, JKRExpandSwitch expandSwitch, u32 fileSize, JKRHeap *heap, int id, u32)
+inline JKRAramBlock* JKRMainRamToAram(u8* buf, u32 bufSize, u32 alignedSize, JKRExpandSwitch expandSwitch, u32 fileSize, JKRHeap* heap, int id, u32)
 {
   return JKRAram::mainRamToAram(buf, bufSize, alignedSize, expandSwitch, fileSize, heap, id);
 }
 
-inline JKRAramStream *JKRCreateAramStreamManager(s32 priority)
+inline JKRAramStream* JKRCreateAramStreamManager(s32 priority)
 {
   return JKRAramStream::create(priority);
 }
 
-inline bool JKRAramPcs(int direction, u32 source, u32 destination, u32 length, JKRAramBlock *block)
+inline bool JKRAramPcs(int direction, u32 source, u32 destination, u32 length, JKRAramBlock* block)
 {
   return JKRAramPiece::orderSync(direction, source, destination, length, block);
 }
 
-inline void JKRAramPcs_SendCommand(JKRAMCommand *cmd)
+inline void JKRAramPcs_SendCommand(JKRAMCommand* cmd)
 {
   JKRAramPiece::sendCommand(cmd);
 }
