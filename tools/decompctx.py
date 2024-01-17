@@ -1,9 +1,15 @@
 # This script makes leaves most of the heavy lifting to pcpp which does preprocessing and expansion of files:
 # https://github.com/ned14/pcpp
 # To use it make sure you run 'pip install pcpp'
+#
+# This script also optionally uses pyperclip to conveniently copy the context to the clipboard:
+# https://github.com/asweigart/pyperclip
+# Install via `pip install pyperclip`
+
 import os
 import re
 import argparse
+import pyperclip
 from io import StringIO
 from pcpp import Preprocessor
 from pcpp import CmdPreprocessor
@@ -313,11 +319,12 @@ def main():
     parser.add_argument("-h", "-help", "--help", dest="help", action="store_true")
     parser.add_argument("-n64", "--n64-sdk", dest="n64_sdk", help="Path to the N64 SDK top level directory", action="store")
     parser.add_argument('-D', dest = 'defines', metavar = 'macro[=val]', nargs = 1, action = 'append', help = 'Predefine name as a macro [with value]')
-    parser.add_argument("--strip-attributes", dest="strip_attributes", help="If __attribute__(()) string should be stripped", action="store_true", default=True)
-    parser.add_argument("--strip-at-address", dest="strip_at_address", help="If AT_ADDRESS or : formatted string should be stripped", action="store_true", default=True)
-    parser.add_argument("--strip-initializer_trailing_commas", dest="strip_initializer_trailing_commas", help="If trailing commas in initializers should be stripped", action="store_true", default=True)
-    parser.add_argument("--convert-binary-literals", dest="convert_binary_literals", help="If binary literals (0bxxxx) should be converted to decimal", action="store_true", default=True)
-    parser.add_argument("--replace-enums-in-initializers", dest="replace_enums_in_initializers", help="If enums should be replaced by its numeric value in initializers", action="store_true", default=True)
+    parser.add_argument("--strip-attributes", dest="strip_attributes", help="If __attribute__(()) string should be stripped", action="store_true", default=False)
+    parser.add_argument("--strip-at-address", dest="strip_at_address", help="If AT_ADDRESS or : formatted string should be stripped", action="store_true", default=False)
+    parser.add_argument("--strip-initializer_trailing_commas", dest="strip_initializer_trailing_commas", help="If trailing commas in initializers should be stripped", action="store_true", default=False)
+    parser.add_argument("--convert-binary-literals", dest="convert_binary_literals", help="If binary literals (0bxxxx) should be converted to decimal", action="store_true", default=False)
+    parser.add_argument("--replace-enums-in-initializers", dest="replace_enums_in_initializers", help="If enums should be replaced by its numeric value in initializers", action="store_true", default=False)
+    parser.add_argument("--clipboard", dest="copy_to_clipboard", help="If the context should be copied to the clipboard", action="store_true", default=False)
 
     # For the output path, we either want to be explicit or relative, but not both
     output_target_group = parser.add_mutually_exclusive_group()
@@ -417,6 +424,10 @@ def main():
     # Write the generated context to the file
     with open(target_file_name, "w", encoding="utf-8", newline="\n") as file_writer:
         file_writer.write(generated_context)
+
+    # Check if we also want to copy to the clipboard
+    if known_args.copy_to_clipboard:
+        pyperclip.copy(generated_context)
 #endregion
 
 if __name__ == "__main__":
