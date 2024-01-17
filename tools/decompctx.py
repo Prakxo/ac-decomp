@@ -12,6 +12,7 @@ from contextlib import redirect_stdout
 at_address_pattern = re.compile(r"(?:.*?)(?:[a-zA-Z_$][\w$]*\s*\*?\s[a-zA-Z_$][\w$]*)\s*((?:AT_ADDRESS|:)(?:\s*\(?\s*)(0x[0-9a-fA-F]+|[a-zA-Z_$][\w$]*)\)?);")
 attribute_pattern = re.compile(r"(__attribute__)")
 binary_literal_pattern = re.compile(r"\b(0b[01]+)\b")
+trailing_initializer_patterns = re.compile(r"^.*?=\s*\{(?:.|\s)+?(,)\s*(?:\/\/.*?|\/\*.*?\*\/)*\s*?\}\s*;", re.MULTILINE)
 #endregion
 
 #region Defaults
@@ -112,6 +113,24 @@ def convert_binary_literals(text_to_strip: str) -> str:
     return text_to_strip
 #endregion
 
+#region Strip Trailing Commas
+def strip_initializer_trailing_commas(text_to_strip: str) -> str:
+    if not text_to_strip:
+        return text_to_strip
+    
+    trailing_comma_matches = reversed(list(re.finditer(trailing_initializer_patterns, text_to_strip)))
+    for attribute_match in trailing_comma_matches:
+        # Create the substring
+        match_span = attribute_match.span(1)
+        start_index = match_span[0]
+        end_index = match_span[1]
+        prefix = text_to_strip[0:start_index]
+        postfix = text_to_strip[end_index:len(text_to_strip)]
+        text_to_strip = prefix + postfix
+    
+    return text_to_strip
+#endregion
+
 #region N64 SDK
 def get_n64_sdk(sdk_argument: str)->str:
     if sdk_argument:
@@ -138,6 +157,7 @@ def main():
     parser.add_argument('-D', dest = 'defines', metavar = 'macro[=val]', nargs = 1, action = 'append', help = 'Predefine name as a macro [with value]')
     parser.add_argument("--strip-attributes", dest="strip_attributes", help="If __attribute__(()) string should be stripped", action="store_true", default=True)
     parser.add_argument("--strip-at-address", dest="strip_at_address", help="If AT_ADDRESS or : formatted string should be stripped", action="store_true", default=True)
+    parser.add_argument("--strip-initializer_trailing_commas", dest="strip_initializer_trailing_commas", help="If trailing commas in initializers should be stripped", action="store_true", default=True)
     parser.add_argument("--convert-binary-literals", dest="convert_binary_literals", help="If binary literals (0bxxxx) should be converted to decimal", action="store_true", default=True)
 
     # For the output path, we either want to be explicit or relative, but not both
@@ -197,6 +217,12 @@ def main():
     # If not targeting Ghidra or m2c we can include more in
     if not known_args.ghidra and not known_args.m2c:
         preprocessor_arguments.append("--passthru-defines")
+    else:
+        # Don't include the line directives if targeting Ghidra/m2c
+        preprocessor_arguments.append("--line-directive")
+
+    # For debugging purposes, include unfound includes in output to mark errors
+    preprocessor_arguments.append("--passthru-unfound-includes")
 
     # Compress to minimize whitespace
     preprocessor_arguments.append("--compress")
@@ -213,6 +239,7 @@ def main():
     should_strip_at_address = known_args.strip_at_address or known_args.ghidra or known_args.m2c
     should_strip_attributes = known_args.strip_attributes or known_args.ghidra or known_args.m2c
     should_convert_binary_literals = known_args.convert_binary_literals or known_args.ghidra
+    should_strip_initializer_trailing_commas = known_args.strip_initializer_trailing_commas or known_args.ghidra
 
     # Create the temp string writer to pass to the preprocessor since we still want to modify
     # the contents for project-specific conditions
@@ -235,11 +262,18 @@ def main():
             else:
                 target_file_name = os.path.join(os.getcwd(), default_output_filename)
 
-            with open(target_file_name, "w", encoding="utf-8", newline="\n") as f:
+            with open(target_file_name, "w", encoding="utf-8", newline="\n") as file_stream:
                 # Do we need to sanitize this further?
-                if not should_strip_attributes and not should_strip_at_address and not should_convert_binary_literals:
-                    f.write(file_string_writer.getvalue())
+                if not should_strip_attributes and not should_strip_at_address and not should_strip_initializer_trailing_commas and not should_convert_binary_literals:
+                    # No sanitation needed, so write the entire file out
+                    file_stream.write(file_string_writer.getvalue())
                     return
+                
+                # Search for multi-line array initialization
+                if should_strip_initializer_trailing_commas:
+                    text_to_strip = file_string_writer.getvalue()
+                    text_to_strip = strip_initializer_trailing_commas(text_to_strip)
+                    file_string_writer = StringIO(text_to_strip)
                 
                 # Sanitize line-by line for easier parsing
                 file_string_writer.seek(0)
@@ -257,7 +291,7 @@ def main():
                     if should_convert_binary_literals:
                         line_to_write = convert_binary_literals(line_to_write)
                     
-                    f.writelines(line_to_write)
+                    file_stream.writelines(line_to_write)
 #endregion
 
 if __name__ == "__main__":
