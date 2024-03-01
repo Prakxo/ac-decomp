@@ -1,5 +1,4 @@
 #include "m_event.h"
-#include "m_actor.h"
 #include "ev_cherry_manager.h"
 
 void eChryMgr_move(ACTOR* actor, GAME* game);
