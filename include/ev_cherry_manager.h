@@ -10,6 +10,12 @@ extern "C" {
 
 extern ACTOR_PROFILE Ev_Cherry_Manager_Profile;
 
+typedef struct cherry_manager_s CHERRY_MANAGER_EVENT_ACTOR;
+
+struct cherry_manager_s {
+  ACTOR actor_class;
+};
+
 #ifdef __cplusplus
 }
 #endif
