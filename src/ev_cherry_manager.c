@@ -12,7 +12,7 @@ ACTOR_PROFILE Ev_Cherry_Manager_Profile = {
     ACTOR_STATE_CAN_MOVE_IN_DEMO_SCENES,
     EMPTY_NO,
     ACTOR_OBJ_BANK_KEEP,
-    sizeof(struct cherry_manager_s),
+    sizeof(CHERRY_MANAGER_EVENT_ACTOR),
 
     &eChryMgr_ct,
     &eChryMgr_dt,
