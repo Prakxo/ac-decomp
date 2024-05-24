@@ -304,7 +304,7 @@ ASFLAGS = ' '.join([
     f"-I {INCDIR}",
     f"-I {PPCDIS_INCDIR}",
     f"-I orig",
-    f"-I {N64SDK}/ultra/usr/include"
+    f"-I {N64SDK}"
 ])
 
 CPPFLAGS = ' '.join([
@@ -312,7 +312,7 @@ CPPFLAGS = ' '.join([
     f"-I {INCDIR}",
     f"-I {PPCDIS_INCDIR}",
     f"-I {BUILD_INCDIR}",
-    f"-I {N64SDK}/ultra/usr/include"
+    f"-I {N64SDK}"
 ])
 
 DOL_SDATA2_SIZE = 8
@@ -389,7 +389,7 @@ LOCAL_CFLAGS = [
     f"-i {INCDIR}",
     f"-i {PPCDIS_INCDIR}",
     f"-i {BUILD_INCDIR}",
-   f"-ir {N64SDK}/ultra/usr/include"
+   f"-ir {N64SDK}"
 ]
 
 PREPROCESSOR_CFLAGS = [
