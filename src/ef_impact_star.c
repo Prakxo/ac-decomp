@@ -2,6 +2,8 @@
 
 #include "m_common_data.h"
 
+extern Gfx ef_star01_00_modelT[];
+
 static void eImpact_Star_init(xyz_t pos, int prio, s16 angle, GAME* game, u16 item_name, s16 arg0, s16 arg1);
 static void eImpact_Star_ct(eEC_Effect_c* effect, GAME* game, void* ct_arg);
 static void eImpact_Star_mv(eEC_Effect_c* effect, GAME* game);
@@ -73,8 +75,6 @@ static void eImpact_Star_mv(eEC_Effect_c* effect, GAME* game) {
 }
 
 static void eImpact_Star_dw(eEC_Effect_c* effect, GAME* game) {
-    extern Gfx ef_star01_00_modelT[];
-
     GAME_PLAY* play = (GAME_PLAY*)game;
     u8 alpha = (int)eEC_CLIP->calc_adjust_proc(effect->timer,0,10, 0.0f, 255.0f);
     
