@@ -90,7 +90,7 @@ static void eImpact_Star_dw(eEC_Effect_c* effect, GAME* game) {
     Matrix_scale(effect->scale.x, effect->scale.y, effect->scale.z, 1);
 
     gSPMatrix(NEXT_POLY_XLU_DISP, _Matrix_to_Mtx_new(game->graph), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gDPSetPrimColor(NEXT_POLY_XLU_DISP,0, 255, 255, 255, 100, alpha);
+    gDPSetPrimColor(NEXT_POLY_XLU_DISP, 0, 255, 255, 255, 100, alpha);
     gSPDisplayList(NEXT_POLY_XLU_DISP, ef_star01_00_modelT);
     
     CLOSE_DISP(game->graph);
