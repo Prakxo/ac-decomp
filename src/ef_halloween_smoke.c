@@ -92,8 +92,8 @@ static void eHalloween_Smoke_dw(eEC_Effect_c* effect, GAME* game) {
     
     eEC_CLIP->auto_matrix_xlu_proc(game, &effect->position, &effect->scale);
     
-    gSPSegment(NEXT_POLY_XLU_DISP, ANIME_1_TXT_SEG, eHalloween_texture_table[tile_idx0]);
-    gSPSegment(NEXT_POLY_XLU_DISP, ANIME_2_TXT_SEG, eHalloween_texture_table[tile_idx1]);
+    gSPSegment(NEXT_POLY_XLU_DISP, G_MWO_SEGMENT_8, eHalloween_texture_table[tile_idx0]);
+    gSPSegment(NEXT_POLY_XLU_DISP, G_MWO_SEGMENT_9, eHalloween_texture_table[tile_idx1]);
     gDPSetPrimColor(NEXT_POLY_XLU_DISP, 0, eHalloween_prim_f[tex_idx], 200, 0, 255, 120);
     gSPDisplayList(NEXT_POLY_XLU_DISP, ef_haro01_00_modelT);
     
