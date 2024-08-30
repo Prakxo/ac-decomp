@@ -20,8 +20,7 @@ if command -v unzip &> /dev/null; then
     unzip compilers_latest.zip -d compilers_temp
 else
     echo "You do not seem to have unzip installed on this system. Please install it to continue."
-    rm compilers_latest.zip
-    rm -r compilers_temp
+    rm -r compilers_temp compilers_latest.zip
     exit 1
 fi
 if [ ! -d "tools/1.2.5n" ]; then mv compilers_temp/GC/1.2.5n/ tools/; fi
