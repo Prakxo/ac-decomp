@@ -16,7 +16,7 @@ exit
 :compilers
 curl -O https://files.decomp.dev/compilers_latest.zip
 mkdir compilers_temp
-tar -xf compilers_latest.zip -C compilers_temp
+powershell -command "Expand-Archive -LiteralPath 'compilers_latest.zip' -DestinationPath compilers_temp"
 :: Only copy compilers that the user doesn't already have.
 IF exist tools\1.2.5n\ ( echo 1.2.5n already exists, skipping copy ) ELSE ( xcopy compilers_temp\GC\1.2.5n\ tools\1.2.5n\ /E /I )
 IF exist tools\1.3.2\ ( echo 1.3.2 already exists, skipping copy ) ELSE ( xcopy compilers_temp\GC\1.3.2\ tools\1.3.2\ /E /I )
