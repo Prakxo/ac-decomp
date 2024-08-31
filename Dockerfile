@@ -2,6 +2,7 @@ FROM ubuntu:24.04 as build
 
 # --- basic package installation ---
 RUN apt-get update && \
+    apt-get upgrade -y && \
     apt-get install -y \
         git \
         ninja-build \
