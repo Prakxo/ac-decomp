@@ -21,5 +21,6 @@ powershell -command "Expand-Archive -LiteralPath 'compilers_latest.zip' -Destina
 IF exist tools\1.2.5n\ ( echo 1.2.5n already exists, skipping copy ) ELSE ( xcopy compilers_temp\GC\1.2.5n\ tools\1.2.5n\ /E /I )
 IF exist tools\1.3.2\ ( echo 1.3.2 already exists, skipping copy ) ELSE ( xcopy compilers_temp\GC\1.3.2\ tools\1.3.2\ /E /I )
 IF exist tools\1.3.2r\ ( echo 1.3.2r already exists, skipping copy ) ELSE ( xcopy compilers_temp\GC\1.3.2r\ tools\1.3.2r\ /E /I )
+del compilers_latest.zip
 rmdir /S /Q compilers_temp\
 goto buildimage
