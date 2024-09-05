@@ -35,6 +35,7 @@ Use `--recursive` when cloning to have ppcdis in the repository.
 2. Place **main.dol**, **foresta.rel.szs**, **forest_1st.arc**, and **forest_2nd.arc** in *dump/*.
 3. Download the [CodeWarrior 1.3.2, 1.3.2r, and 1.2.5n compilers](https://files.decomp.dev/compilers_latest.zip) and extract them to *tools/1.3.2/*, *tools/1.3.2r/*, and *tools/1.2.5n/*, respectively.
 4. Install Python, pip, and [ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages#package-managers) using your package manager of choice.
+    - If using an ARM-based device, you will also need to install cmake.
 5. Install Python modules from requirements.txt (`pip install -r requirements.txt`).
 6. Install [wibo](https://github.com/decompals/wibo)
     - Wibo is a lightweight Wine replacement that's tailor-made for use with decomp projects. Regular Wine can be used if preferred, but for the purposes of this guide, these instructions will use wibo.
