@@ -23,16 +23,12 @@ static void eKasamizu_init(xyz_t pos, int prio, s16 angle, GAME* game, u16 item_
     eEC_CLIP->make_effect_proc(eEC_EFFECT_KASAMIZU, pos, NULL, game, &angle, item_name, prio, arg0, arg1);
 }
 
-static xyz_t base_offset[] = {
-    { 0, 0, 0x4234 },
-    { 0, 0xC1A0, 0 },
-};
-
 static void eKasamizu_ct(eEC_Effect_c* effect, GAME* game, void* ct_arg) {
+    static xyz_t base_offset = {0, 45.0f, -20.0f};
     xyz_t pos;
     s16 angle = *(s16*)ct_arg;
     Matrix_RotateY(angle, 0);
-    Matrix_Position(base_offset, &pos);
+    Matrix_Position(&base_offset, &pos);
     xyz_t_add(&effect->position, &pos, &effect->position);
     effect->effect_specific[0] = angle;
     effect->timer = 24;
