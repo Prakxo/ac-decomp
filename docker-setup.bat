@@ -8,7 +8,7 @@ IF exist tools\1.3.2r\ ( echo 1.3.2r exists ) ELSE ( goto compilers )
 goto buildimage
 
 :buildimage
-docker build -t ac-decomp .
+docker buildx build -t ac-decomp .
 echo "Docker image setup is now complete. You may proceed with the instructions."
 pause
 exit

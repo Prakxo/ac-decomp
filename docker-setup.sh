@@ -27,5 +27,5 @@ if [ ! -d "tools/1.2.5n" ]; then mv compilers_temp/GC/1.2.5n/ tools/; fi
 if [ ! -d "tools/1.3.2" ]; then mv compilers_temp/GC/1.3.2/ tools/; fi
 if [ ! -d "tools/1.3.2r" ]; then mv compilers_temp/GC/1.3.2r/ tools/; fi
 rm -r compilers_temp compilers_latest.zip
-docker build -t ac-decomp .
+docker buildx build -t ac-decomp .
 echo "Docker image setup is now complete. You may proceed with the instructions."
